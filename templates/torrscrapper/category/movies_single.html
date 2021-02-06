@@ -21,10 +21,10 @@
         <span class="about text-primary">About movie:</span>
         <p class="text-white"> {{ movie.synopsis }}</p>
         {% if movie.quality_720 != "NULL" %}
-        <div class="but text-center"><a href="{{ movie.quality_720p }}" class="download-button">Download 720p</button></a><br><span class="text-primary"><br> File size: {{ movie.quality_720p_size }}</span></div>
+        <div class="but text-center"><a href="{{ movie.quality_720p }}" class="download-button">Download 720p</button></a><br><h6 class="text-primary"><br> File size: {{ movie.quality_720p_size }}</h6><br></div>
         {% endif %}
         {% if movie.quality_1080 != "NULL" %}
-        <div class="but text-center"><a href="{{ movie.quality_1080p }}" class="download-button">Download 1080p</button></a><br><span class="text-primary"><br> File size: {{ movie.quality_1080p_size }}</span></div>
+        <div class="but text-center"><a href="{{ movie.quality_1080p }}" class="download-button">Download 1080p</button></a><br><h6 class="text-primary"><br> File size: {{ movie.quality_1080p_size }}</h6></div>
         {% endif %}  
       </div>
         

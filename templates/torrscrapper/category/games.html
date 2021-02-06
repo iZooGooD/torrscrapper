@@ -3,61 +3,49 @@
 <div class="container ">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb my-2">
-          <li class="breadcrumb-item"><a href="/index.html">TorrScrapper</a></li>
+          <li class="breadcrumb-item"><a href="{% url 'index' %}">TorrScrapper</a></li>
           <li class="breadcrumb-item active" aria-current="page">Games</li>
          
         </ol>
       </nav>
 
-    <form class="mt-3" method="POST" action="searchResults.html">
+      <form class="my-3" method="GET" action="{% url 'games' %}">
         <div class="_form-group form_games">
-        <input type="text" placeholder="Title,Keywords..etc" class="_s_box">
+            {% if search_flag == True %}
+            <input type="text" placeholder="Title,Keywords..etc" class="_s_box" name="keywords" autocomplete="off" value={{ search_keywords }}>
+            {% else %}
+        <input type="text" placeholder="Title,Keywords..etc" class="_s_box" name="keywords" autocomplete="off">
+
+        {% endif %}
         <button type="submit" class="_s_button">SEARCH</button>
+      
         </div>
+        {% if search_flag == True %}
+        <h5 class="text-info text-center my-3">Found {{ search_length }} results for "{{ search_keywords }}" </h5>
+        {% else %}
+
+        <h6 class="text-muted  my-3">*Indexing a total of {{ all_games_length }} games </h6>
+       
+        {% endif %}
+  
         </form>
 <div class="row mt-2">
+
+{% for game in all_games %}
 <div class="card col-sm-8 col-md-6 col-lg-5 all_games_post">
-    <h5 class="card-header text-white text-center">Escape the Ayuwoki The Summoning-CODEX</h5>
-    <div class="card-img text-center"><img src="https://steamcdn-a.akamaihd.net/steam/apps/1412230/header.jpg?t=1604197175"> </div>
+    <h5 class="card-header text-white text-center">{{ game.title}}</h5>
+    <div class="card-img text-center"><img src="{{ game.image_url }}"> </div>
 <div class="card-body">
-<h6 class="text-white">Release date:  30 Oct, 2020</h6>
-<h6 class="text-white">Game size:   8.84 GB</h6>
-<div class="but text-center"><a href="games_single.html" class="download-button">Download</a></div>
+<h6 class="text-white">Release date:  {{ game.release_date }}</h6>
+<h6 class="text-white">Game size:   {{ game.size }}</h6>
+<div class="but text-center"><a href="{% url 'games_single' game.pk %}" class="download-button">Download</a></div>
 </div>
 </div>
+{% endfor %}
 
 
-<div class="card col-sm-8 col-md-6 col-lg-5 offset-lg-1 all_games_post">
-    <h5 class="card-header text-white text-center">Battlefield V-CPY</h5>
-    <div class="card-img text-center"><img src="https://i.postimg.cc/QNPLPg64/bfv.jpg"> </div>
-<div class="card-body">
-<h6 class="text-white">Release date:  30 Oct, 2020</h6>
-<h6 class="text-white">Game size:   8.84 GB</h6>
-<div class="but text-center"><a href="games_single.html" class="download-button">Download</button></a>
-</div>
-</div>
-</div>
-
-<div class="card col-sm-8 col-md-6 col-lg-5 all_games_post">
-    <h5 class="card-header text-white text-center">Battlefield V-CPY</h5>
-    <div class="card-img text-center"><img src="https://i.postimg.cc/QNPLPg64/bfv.jpg"> </div>
-<div class="card-body">
-<h6 class="text-white">Release date:  30 Oct, 2020</h6>
-<h6 class="text-white">Game size:   8.84 GB</h6>
-<div class="but text-center"><button class="download-button">Download</button></div>
-</div>
-</div>
 
 
-<div class="card col-sm-8 col-md-6 col-lg-5 offset-lg-1 all_games_post">
-    <h5 class="card-header text-white text-center">Battlefield V-CPY</h5>
-    <div class="card-img text-center"><img src="https://i.postimg.cc/QNPLPg64/bfv.jpg"> </div>
-<div class="card-body">
-<h6 class="text-white">Release date:  30 Oct, 2020</h6>
-<h6 class="text-white">Game size:   8.84 GB</h6>
-<div class="but text-center"><button class="download-button">Download</button></div>
-</div>
-</div>
 
 
 
@@ -67,15 +55,87 @@
 </div>
 
 
-    <nav aria-label="Page navigation example" class="my_paging">
-        <ul class="pagination m-5">
-          <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-          <li class="page-item"><a class="page-link" href="#">1</a></li>
-          <li class="page-item"><a class="page-link" href="#">2</a></li>
-          <li class="page-item"><a class="page-link" href="#">3</a></li>
-          <li class="page-item"><a class="page-link" href="#">Next</a></li>
-        </ul>
-      </nav>
+<nav aria-label="Page navigation example" class="my_paging">
+
+     
+  {% if search_flag == True %}
+ 
+  {% if all_games.has_other_pages %}
+
+  <ul class="pagination main_paginate">
+      <li class="page-item">
+          {% if all_games.has_previous %}
+          <a class="page-link" href="?keywords={{ search_keywords }}&page={{all_games.previous_page_number}}">&laquo;</a>
+          {% endif %}
+      </li>
+      <li class="page-item">
+          <a class="page-link" href="?keywords={{ search_keywords }}&page=1">First</a>
+         </li>
+         {% for l in  all_games.paginator.page_range %}
+         {% if l <= all_games.number|add:3 and l >= all_games.number|add:-3 %}
+              {% if all_games.number == l %}
+             <li class="page-item active"><a class="page-link" href="?keywords={{ search_keywords }}&page={{forloop.counter}}">{{forloop.counter}}</a></li>
+             {% else %}
+             <li class="page-item"><a class="page-link" href="?keywords={{ search_keywords }}&page={{forloop.counter}}">{{forloop.counter}}</a></li>
+             {% endif %}
+         {% endif %}
+     {% endfor %}
+<li class="page-item">
+<a class="page-link" href="?keywords={{ search_keywords }}&page={{all_games.paginator.num_pages}}">Last</a>
+</li>
+  <li class="page-item">
+          {% if all_games.has_next %}
+          <a class="page-link" href="?keywords={{ search_keywords }}&page={{all_games.next_page_number}}">&raquo;</a>
+          {% endif %}
+      </li>
+      </ul>
+  {% endif %}
+
+
+
+
+
+
+
+
+
+
+
+      {% else %}
+      <ul class="pagination main_paginate">
+          <li class="page-item">
+              {% if all_games.has_previous %}
+              <a class="page-link" href="?page={{all_games.previous_page_number}}">&laquo;</a>
+              {% endif %}
+          </li>
+          <li class="page-item">
+              <a class="page-link" href="?page=1">First</a>
+             </li>
+          {% for l in  all_games.paginator.page_range %}
+          {% if l <= all_games.number|add:3 and l >= all_games.number|add:-3 %}
+               {% if all_games.number == l %}
+              <li class="page-item active"><a class="page-link" href="?page={{forloop.counter}}">{{forloop.counter}}</a></li>
+              {% else %}
+              <li class="page-item"><a class="page-link" href="?page={{forloop.counter}}">{{forloop.counter}}</a></li>
+              {% endif %}
+
+
+          {% endif %}
+      {% endfor %}
+ <li class="page-item">
+  <a class="page-link" href="?page={{all_games.paginator.num_pages}}">Last</a>
+ </li>
+      <li class="page-item">
+              {% if all_games.has_next %}
+              <a class="page-link" href="?page={{all_games.next_page_number}}">&raquo;</a>
+              {% endif %}
+          </li>
+          </ul>
+
+
+
+      {% endif %}
+</nav>
 
 
 

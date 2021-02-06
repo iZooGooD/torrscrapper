@@ -24,6 +24,8 @@
         </form>
         {% if search_flag == True %}
         <h5 class="text-info text-center my-3">Found {{ search_length }} results for "{{ search_keywords }}" </h5>
+        {% else %}
+        <h6 class="text-muted  my-3">*Indexing a total of {{ all_movies_length }} movies </h6>
         {% endif %}
 <div class="row mt-2">
 

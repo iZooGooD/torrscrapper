@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% block all_games_page %}
+<div class="container ">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb my-2">
+          <li class="breadcrumb-item"><a href="/index.html">TorrScrapper</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Games</li>
+         
+        </ol>
+      </nav>
+
+    <form class="mt-3" method="POST" action="searchResults.html">
+        <div class="_form-group form_games">
+        <input type="text" placeholder="Title,Keywords..etc" class="_s_box">
+        <button type="submit" class="_s_button">SEARCH</button>
+        </div>
+        </form>
+<div class="row mt-2">
+<div class="card col-sm-8 col-md-6 col-lg-5 all_games_post">
+    <h5 class="card-header text-white text-center">Escape the Ayuwoki The Summoning-CODEX</h5>
+    <div class="card-img text-center"><img src="https://steamcdn-a.akamaihd.net/steam/apps/1412230/header.jpg?t=1604197175"> </div>
+<div class="card-body">
+<h6 class="text-white">Release date:  30 Oct, 2020</h6>
+<h6 class="text-white">Game size:   8.84 GB</h6>
+<div class="but text-center"><a href="games_single.html" class="download-button">Download</a></div>
+</div>
+</div>
+
+
+<div class="card col-sm-8 col-md-6 col-lg-5 offset-lg-1 all_games_post">
+    <h5 class="card-header text-white text-center">Battlefield V-CPY</h5>
+    <div class="card-img text-center"><img src="https://i.postimg.cc/QNPLPg64/bfv.jpg"> </div>
+<div class="card-body">
+<h6 class="text-white">Release date:  30 Oct, 2020</h6>
+<h6 class="text-white">Game size:   8.84 GB</h6>
+<div class="but text-center"><a href="games_single.html" class="download-button">Download</button></a>
+</div>
+</div>
+</div>
+
+<div class="card col-sm-8 col-md-6 col-lg-5 all_games_post">
+    <h5 class="card-header text-white text-center">Battlefield V-CPY</h5>
+    <div class="card-img text-center"><img src="https://i.postimg.cc/QNPLPg64/bfv.jpg"> </div>
+<div class="card-body">
+<h6 class="text-white">Release date:  30 Oct, 2020</h6>
+<h6 class="text-white">Game size:   8.84 GB</h6>
+<div class="but text-center"><button class="download-button">Download</button></div>
+</div>
+</div>
+
+
+<div class="card col-sm-8 col-md-6 col-lg-5 offset-lg-1 all_games_post">
+    <h5 class="card-header text-white text-center">Battlefield V-CPY</h5>
+    <div class="card-img text-center"><img src="https://i.postimg.cc/QNPLPg64/bfv.jpg"> </div>
+<div class="card-body">
+<h6 class="text-white">Release date:  30 Oct, 2020</h6>
+<h6 class="text-white">Game size:   8.84 GB</h6>
+<div class="but text-center"><button class="download-button">Download</button></div>
+</div>
+</div>
+
+
+
+
+
+
+</div>
+
+
+    <nav aria-label="Page navigation example" class="my_paging">
+        <ul class="pagination m-5">
+          <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+          <li class="page-item"><a class="page-link" href="#">1</a></li>
+          <li class="page-item"><a class="page-link" href="#">2</a></li>
+          <li class="page-item"><a class="page-link" href="#">3</a></li>
+          <li class="page-item"><a class="page-link" href="#">Next</a></li>
+        </ul>
+      </nav>
+
+
+
+
+</div>
+
+{% endblock %}
+

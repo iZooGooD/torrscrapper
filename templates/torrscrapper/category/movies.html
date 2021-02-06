@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+{% block all_movies_page %} 
+<div class="container-fluid ">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb my-2">
+          <li class="breadcrumb-item"><a href="{% url 'index' %}">TorrScrapper</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Movies</li>
+         
+        </ol>
+      </nav>
+
+    <form class="my-3" method="GET" action="{% url 'movies' %}">
+        <div class="_form-group form_movies">
+            {% if search_flag == True %}
+            <input type="text" placeholder="Title,Keywords..etc" class="_s_box" name="keywords" autocomplete="off" value={{ search_keywords }}>
+            {% else %}
+        <input type="text" placeholder="Title,Keywords..etc" class="_s_box" name="keywords" autocomplete="off">
+
+        {% endif %}
+        <button type="submit" class="_s_button">SEARCH</button>
+      
+        </div>
+  
+        </form>
+        {% if search_flag == True %}
+        <h5 class="text-info text-center my-3">Found {{ search_length }} results for "{{ search_keywords }}" </h5>
+        {% endif %}
+<div class="row mt-2">
+
+{% for movie in all_movies %}
+<div class="card col-5 col-md-2 col-lg-2 all_movies_post">
+    <h5 class="card-header text-white text-center">{{ movie.title }}</h5>
+    <div class="all_movies_img text-center"><img src="{{ movie.image_url }}" alt="{{ movie.title }}"> </div>
+<div class="card-body">
+<h6 class="text-white text-center"> Release Date: {{ movie.release_date }}</h6>
+<div class="but text-center "><a href="{% url 'movies_single' movie.pk %}" class="download-button mt-2">Download</a></div>
+</div>
+</div>
+{% endfor %}
+
+
+
+
+
+
+
+
+</div>
+    <nav aria-label="Page navigation example" class="my_paging">
+
+     
+        {% if search_flag == True %}
+       
+        {% if all_movies.has_other_pages %}
+     
+        <ul class="pagination main_paginate">
+            <li class="page-item">
+                {% if all_movies.has_previous %}
+                <a class="page-link" href="?keywords={{ search_keywords }}&page={{all_movies.previous_page_number}}">&laquo;</a>
+                {% endif %}
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="?keywords={{ search_keywords }}&page=1">First</a>
+               </li>
+               {% for l in  all_movies.paginator.page_range %}
+               {% if l <= all_movies.number|add:3 and l >= all_movies.number|add:-3 %}
+                    {% if all_movies.number == l %}
+                   <li class="page-item active"><a class="page-link" href="?keywords={{ search_keywords }}&page={{forloop.counter}}">{{forloop.counter}}</a></li>
+                   {% else %}
+                   <li class="page-item"><a class="page-link" href="?keywords={{ search_keywords }}&page={{forloop.counter}}">{{forloop.counter}}</a></li>
+                   {% endif %}
+               {% endif %}
+           {% endfor %}
+   <li class="page-item">
+    <a class="page-link" href="?keywords={{ search_keywords }}&page={{all_movies.paginator.num_pages}}">Last</a>
+   </li>
+        <li class="page-item">
+                {% if all_movies.has_next %}
+                <a class="page-link" href="?keywords={{ search_keywords }}&page={{all_movies.next_page_number}}">&raquo;</a>
+                {% endif %}
+            </li>
+            </ul>
+        {% endif %}
+
+
+
+
+
+
+
+
+
+
+
+            {% else %}
+            <ul class="pagination main_paginate">
+                <li class="page-item">
+                    {% if all_movies.has_previous %}
+                    <a class="page-link" href="?page={{all_movies.previous_page_number}}">&laquo;</a>
+                    {% endif %}
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page=1">First</a>
+                   </li>
+                {% for l in  all_movies.paginator.page_range %}
+                {% if l <= all_movies.number|add:3 and l >= all_movies.number|add:-3 %}
+                     {% if all_movies.number == l %}
+                    <li class="page-item active"><a class="page-link" href="?page={{forloop.counter}}">{{forloop.counter}}</a></li>
+                    {% else %}
+                    <li class="page-item"><a class="page-link" href="?page={{forloop.counter}}">{{forloop.counter}}</a></li>
+                    {% endif %}
+
+
+                {% endif %}
+            {% endfor %}
+       <li class="page-item">
+        <a class="page-link" href="?page={{all_movies.paginator.num_pages}}">Last</a>
+       </li>
+            <li class="page-item">
+                    {% if all_movies.has_next %}
+                    <a class="page-link" href="?page={{all_movies.next_page_number}}">&raquo;</a>
+                    {% endif %}
+                </li>
+                </ul>
+
+
+
+            {% endif %}
+      </nav>
+</div>
+{% endblock %}

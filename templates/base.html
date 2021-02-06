@@ -1,0 +1,60 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="{% static 'css/style.css' %}" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w==" crossorigin="anonymous" />
+<title>TorrentScrapper | A torrent directory</title>
+</head>
+<body >
+    <div class="mobile-menu">
+        <i id="close-menu" class="fas fa-times"></i>
+        <h4 class="dropdown-menu-item"><a href="{% url 'index' %}">Home</a></h4>
+        <h4 class="dropdown-menu-item"><a href="#">About</a></h4>
+        <h4 class="dropdown-menu-item"><a href="{% url 'dmca' %}">DMCA Policy</a></h4>
+
+    </div>
+<nav class="_navbar-main">
+    <i id="menu-bar" class="fas fa-bars"></i>
+<a href="{% url 'index' %}" class="_navbar-brand">TorrScrapper</a><span class="headline">All your torrents at one place</span> 
+<ul class="_navbar" id="nav_nav">
+<li><a href="{% url 'index' %}">Home</a></li>
+<li><a href="#">About</a></li>
+<li><a href="{% url 'dmca' %}">DMCA Policy</a></li>
+</ul>
+</nav>
+
+
+{% block index_page %} {% endblock %}
+{% block search_torrents_page %} {% endblock %}
+{% block dmca_policy_page %} {% endblock %}
+
+
+{% block all_movies_page %} {% endblock %}
+{% block movie_page %} {% endblock %}
+{% block all_games_page %} {% endblock %}
+{% block game_page %} {% endblock %}
+
+
+
+
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+<script src="{% static 'js/script.js' %}"></script>
+</html>
+
+
+
+
+
+
+
+
+
+

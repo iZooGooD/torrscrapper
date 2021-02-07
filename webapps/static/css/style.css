@@ -334,7 +334,7 @@ width: 90%!important;
     background-position:center;
 }
 .my_paging{
-   border: 1px solid green!important;
+   
     justify-content: start;
     font-size:0.8rem!important;
  
@@ -400,7 +400,15 @@ width: 90%!important;
     max-width: 100%!important;
 }
 
+.page-link{
+    background-color: #333333!important;
+    border:1px solid #171717!important; 
+    color:white!important;
+}
 
+#active_page{
+    background-color: #6AC045!important;
+}
 
 
 
@@ -444,4 +452,101 @@ width: 90%!important;
 .dmca-policy{
     
     word-spacing: 0.3rem;
+}
+
+.content{
+    margin-bottom: 700px;
+}
+/*Footer styling*/
+
+footer{
+    
+    border-top: 1px solid #333333;
+    background-color:#171717;
+    display:flex !important;
+    height:80px;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding:10px;
+
+}
+
+footer small{
+margin: auto;
+color:white;
+font-style: italic;
+}
+
+footer .follow-links{
+    margin: auto;
+    color:white;
+}
+
+footer .follow-links a{
+    text-decoration: none;
+    color:white;
+    transition:0.3s ease-in all;
+}
+footer .follow-links a:hover{
+    color:rgb(17, 104, 185);
+}
+
+
+/** contact form **/
+
+.contact_form{
+    color:white;
+    max-width:700px;
+}
+.contact_form input{
+    background-color:#1D1D1D;
+    border:1px solid #333333;
+    color:white;
+}
+
+.contact_form input:focus{
+    background-color:#1D1D1D;
+    border:1px solid #333333!important;
+    box-shadow: none!important;
+    color:white;
+
+}
+
+.contact_form textarea{
+    background-color:#1D1D1D;
+    
+    border:1px solid #333333;
+    color:white;
+
+}
+
+.contact_form textarea:focus{
+    background-color:#1D1D1D;
+    border:1px solid #333333!important;
+    box-shadow: none!important;
+    color:white;
+
+}
+
+.contact_form .from-group{
+    margin: 30px 0;
+}
+.contact_form button{
+    padding:10px 25px;
+    color:white;
+    background-color: #6AC045;
+    border:none;
+    transition:0.4s all ease;
+}
+.contact_form button:hover{
+    background-color: #38741f;
+}
+
+/** privacy section **/
+
+
+.privacy-section{
+
+    margin:30px 0;
 }

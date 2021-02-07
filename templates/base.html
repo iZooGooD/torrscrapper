@@ -4,6 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Download free movies,torrents,games with no ads"/>
+    <meta name="keyword" content="Free movies,Videos,Games,Torrents,no ads,1337x,idope.se,yts,piratebay,skidrowgames">
+    <meta name="robots" content="index, follow">
 <link href="{% static 'css/style.css' %}" rel="stylesheet">
 <link rel="preconnect" href="https://fonts.gstatic.com">
 <link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap" rel="stylesheet">
@@ -34,6 +37,8 @@
 {% block index_page %} {% endblock %}
 {% block search_torrents_page %} {% endblock %}
 {% block dmca_policy_page %} {% endblock %}
+{% block privacy_page %} {% endblock %}
+{% block contact_page %} {% endblock %}
 
 
 {% block all_movies_page %} {% endblock %}
@@ -41,7 +46,17 @@
 {% block all_games_page %} {% endblock %}
 {% block game_page %} {% endblock %}
 
-
+<footer>
+    <small class="copyrights">&copy; Copyright 2020-2021,TorrScrapper</small>
+    <div class="follow-links mt-2">Quick links<br>
+        <ul>
+          <li><a href="{% url 'privacy_policy' %}">Privacy policy</a></li>  
+          <li><a href="{% url 'contact_us' %}">Contact us</a></li>  
+        </ul>
+ 
+    </div>
+    
+</footer>
 
 
 </body>

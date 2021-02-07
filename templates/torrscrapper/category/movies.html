@@ -67,7 +67,7 @@
                {% for l in  all_movies.paginator.page_range %}
                {% if l <= all_movies.number|add:3 and l >= all_movies.number|add:-3 %}
                     {% if all_movies.number == l %}
-                   <li class="page-item active"><a class="page-link" href="?keywords={{ search_keywords }}&page={{forloop.counter}}">{{forloop.counter}}</a></li>
+                   <li class="page-item active"><a class="page-link" id="active_page" href="?keywords={{ search_keywords }}&page={{forloop.counter}}">{{forloop.counter}}</a></li>
                    {% else %}
                    <li class="page-item"><a class="page-link" href="?keywords={{ search_keywords }}&page={{forloop.counter}}">{{forloop.counter}}</a></li>
                    {% endif %}
@@ -96,7 +96,7 @@
 
             {% else %}
             <ul class="pagination main_paginate">
-                <li class="page-item">
+                <li class="">
                     {% if all_movies.has_previous %}
                     <a class="page-link" href="?page={{all_movies.previous_page_number}}">&laquo;</a>
                     {% endif %}
@@ -107,7 +107,7 @@
                 {% for l in  all_movies.paginator.page_range %}
                 {% if l <= all_movies.number|add:3 and l >= all_movies.number|add:-3 %}
                      {% if all_movies.number == l %}
-                    <li class="page-item active"><a class="page-link" href="?page={{forloop.counter}}">{{forloop.counter}}</a></li>
+                    <li class="page-item "><a class="page-link" id="active_page" href="?page={{forloop.counter}}">{{forloop.counter}}</a></li>
                     {% else %}
                     <li class="page-item"><a class="page-link" href="?page={{forloop.counter}}">{{forloop.counter}}</a></li>
                     {% endif %}

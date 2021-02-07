@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% block contact_page %}
+<div class="container">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb my-2">
+          <li class="breadcrumb-item"><a href="{% url 'index' %}">TorrScrapper</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Contact us
+        </li>
+         
+        </ol>
+      </nav>
+
+      <div class="contact my-5">
+    <h3 class="text-white">Contact Us</h3>
+    <p class="text-white">If you have something to say about TorrScrapper feel free to send us an email. If you want to suggest new features or found anything wrong with this site please let us know.</p>
+    <form class="contact_form" action="{% url 'contact_form_submit' %}" method="POST">
+    {% csrf_token %}
+    <div class="from-group">
+     <label for="name">Your Name</label>
+     <input type="text" class="form-control" name="name" autocomplete="off" required=required >   
+    </div>
+
+    <div class="from-group">
+        <label for="email">Your Email</label>
+        <input type="email" class="form-control" name="email" autocomplete="off" required=required>   
+    </div>
+    <div class="from-group">
+      <label for="subject">Subject</label>
+      <input type="text" class="form-control" name="subject" autocomplete="off" required=required>   
+  </div>
+
+    <div class="from-group">
+        <label for="message">Your Message</label><br>
+        <textarea name="message" class="form-control"rows=10 autocomplete="off" required=required></textarea>
+    </div>
+
+    <div class="form-group text-end">
+      {% if success == True %}
+        <button type="submit" disabled>Submit</button>
+        {% else %}
+        <button type="submit">Submit</button>
+        {% endif %}
+    </div>
+    </form>
+      </div>
+    {% if success == True %}
+    <div class="success">
+    <p class="text-success">Your message was successfully submitted</p>
+    </div>
+    {% else %}
+    <div class="error mb-4">
+      {% if errors|length > 0 %}
+      <h6 class="text-white">Please correct below errors</h6>
+      {% endif %}
+      {% for error in errors %}
+    <small class="error-message text-warning">*{{ error }}</small><br>
+    {% endfor %}
+    </div>
+
+    {% endif %}
+</div>
+
+
+{% endblock %}

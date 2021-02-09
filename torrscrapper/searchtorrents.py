@@ -69,7 +69,7 @@ def extract_links_magnetdl(keyword,max_crawl_page=2,order_by='desc'):
 
 
 ## brute force to get all links at once
-def extract_links_1337x(keyword,max_crawl_page=0,order_by='desc'):
+def extract_links_1337x(keyword,max_crawl_page=1,order_by='desc'):
     page_number=1
     extracted_links=[] ## all data will be in this list
     headers={'user-agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36'}

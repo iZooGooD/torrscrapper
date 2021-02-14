@@ -106,7 +106,7 @@ def searchTorrents(request):
                     f_results2.append(temp)
 
         results=f_results1+f_results2
-        results2=sorted(results, key = lambda item: item['seeds'],reverse=True)
+        results2=sorted(results, key = lambda item: int(item['seeds']),reverse=True)
         context["torrents"]=results2
         return render(request,"torrscrapper/searchResults.html",context)
     return redirect('index')

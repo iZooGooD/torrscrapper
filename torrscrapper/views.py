@@ -3,7 +3,9 @@ from django.contrib import messages,auth
 from django.http import HttpResponse
 from torrscrapper.models import Movies,Games,Contact
 from django.core.paginator import EmptyPage,PageNotAnInteger,Paginator
-from torrscrapper.searchtorrents import client_query
+import requests
+from bs4 import BeautifulSoup
+import cloudscraper
 
 # Create your views here.
 def index(request):
@@ -15,7 +17,94 @@ def searchTorrents(request):
         keywords=request.GET['keywords']
         context['search_flag']=True
         context['keywords']=keywords
-        results=client_query(keywords)
+
+
+        ##magnet dl
+        keyword=keywords.lower()
+        extracted_links=[] ## all data will be in this list
+        page_title="working"
+        order_by="desc"
+        f_results2=[]
+        on_1337x=True
+
+        for i in range(1,3):
+            url="https://magnetdl.unblockit.ltd/"+keyword[0]+"/"+keyword.replace(' ','-')+"/se/"+order_by+'/'+str(i)+"/"
+            print(url)
+            scraper = cloudscraper.create_scraper(browser='chrome') ## to prevent cloud fare auto bot page to detect bots
+            text=scraper.get(url).text
+            soup=BeautifulSoup(text,'html.parser')
+                
+            # getting all titles
+            titles=soup.findAll(class_="n")
+            # torrents[0].contents[0]['title']
+            
+            # getting magnet
+            magnets=soup.findAll(class_="m")
+            # torrents[0].contents[0]['href']
+            # getting seeds
+            seeds=soup.findAll(class_="s")
+            # print(torrents[0].string)
+            # getting leeches
+            peers=soup.findAll(class_="l")
+            # print(torrents[0].string)
+            ####### get the sizes
+            sizes=[]
+            torrents=soup.findAll("tr")
+            for torrent in torrents:
+                try:
+                    if torrent.findChildren()[9].string=='Size':
+                        pass
+                    else:
+                        sizes.append(torrent.findChildren()[9].string)
+                except:
+                    pass
+            
+            
+            for title,link,seed,peer,size in zip(titles,magnets,seeds,peers,sizes):
+                try:
+                    extracted_links.append([title.contents[0]['title'],link.contents[0]['href'],seed.string,peer.string,size])
+                except:
+                    pass
+            f_results1=[]
+            for item in extracted_links:
+                temp={'title':item[0],'magnet':item[1],'seeds':item[2],'peers':item[3],'size':item[4]}
+                f_results1.append(temp)
+        
+        ###1337x
+        if on_1337x:
+            url="https://1337x.unblockit.ltd/sort-search/"+keyword+"/seeders/"+order_by+"/"+str("1")+"/"
+            scraper = cloudscraper.create_scraper(browser='chrome') ## to prevent cloud fare auto bot page to detect bots
+            text=scraper.get(url).text
+            extracted_links2=[]
+            soup=BeautifulSoup(text,'html.parser')
+            torrents=soup.findAll(class_="name")
+            find_seeds=soup.findAll(class_="seeds")
+            find_leeches=soup.findAll(class_="leeches")
+            find_sizes=soup.findAll(class_="size") 
+            for (items,seeds,leeches,size) in zip(torrents,find_seeds,find_leeches,find_sizes):
+                try:
+                    href_link=items.contents[1].get("href")
+                    magnet=""
+                    href_link=href_link.replace("/","",1)
+                    scraper = cloudscraper.create_scraper(browser='chrome')
+                    url="https://1337x.unblockit.ltd/"+href_link
+                    text=scraper.get(url).text
+                    soup=BeautifulSoup(text,'html.parser')
+                    for link in soup.find_all("a"):
+                        if len(link.get("href"))>100:
+                            magnet=link.get("href")
+                            print(magnet)
+                            
+                            break
+                    extracted_links2.append([items.contents[1].string,magnet,seeds.string,leeches.string,size.contents[0].string])
+                except:
+                    pass
+                f_results2=[]
+                for item in extracted_links2:
+                    temp={'title':item[0],'magnet':item[1],'seeds':item[2],'peers':item[3],'size':item[4]}
+                    f_results2.append(temp)
+
+        results=f_results1+f_results2
         context["torrents"]=results
         return render(request,"torrscrapper/searchResults.html",context)
     return redirect('index')

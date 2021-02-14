@@ -6,6 +6,7 @@ from django.core.paginator import EmptyPage,PageNotAnInteger,Paginator
 import requests
 from bs4 import BeautifulSoup
 import cloudscraper
+from operator import itemgetter 
 
 # Create your views here.
 def index(request):
@@ -105,6 +106,7 @@ def searchTorrents(request):
                     f_results2.append(temp)
 
         results=f_results1+f_results2
+        results=sorted(results, key=itemgetter('seeds'))
         context["torrents"]=results
         return render(request,"torrscrapper/searchResults.html",context)
     return redirect('index')

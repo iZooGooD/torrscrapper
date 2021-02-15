@@ -13,12 +13,12 @@ def index(request):
     return render(request,"torrscrapper/index.html")
 
 def searchTorrents(request):
+    print("Search Method was called successfully")
     context={}
     if 'keywords' in request.GET:
         keywords=request.GET['keywords']
         context['search_flag']=True
         context['keywords']=keywords
-
 
         ##magnet dl
         keyword=keywords.lower()
@@ -27,13 +27,22 @@ def searchTorrents(request):
         order_by="desc"
         f_results2=[]
         on_1337x=True
-
+        print("This message is just before trying to send request")
         for i in range(1,3):
+            print("Right inside the for loop")
             url="https://magnetdl.unblockit.ltd/"+keyword[0]+"/"+keyword.replace(' ','-')+"/se/"+order_by+'/'+str(i)+"/"
-            print(url)
+            print("setting up url successfull")
             scraper = cloudscraper.create_scraper(browser='chrome') ## to prevent cloud fare auto bot page to detect bots
-            text=scraper.get(url).text
+            print("Created the cloud scraper succesfully")
+            print("Now making the request")
+            try:
+                text=scraper.get(url).text
+                print("request was successfull")
+            except Exception as e:
+                print("There was an error "+str(e))
+                
             soup=BeautifulSoup(text,'html.parser')
+            print("Soup object success")
                 
             # getting all titles
             titles=soup.findAll(class_="n")

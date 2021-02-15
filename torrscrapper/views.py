@@ -103,7 +103,7 @@ def searchTorrents(request):
                     for link in soup.find_all("a"):
                         if len(link.get("href"))>100:
                             magnet=link.get("href")
-                            print(magnet)
+                            
                             
                             break
                     extracted_links2.append([items.contents[1].string,magnet,seeds.string,leeches.string,size.contents[0].string])

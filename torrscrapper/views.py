@@ -6,19 +6,18 @@ from django.core.paginator import EmptyPage,PageNotAnInteger,Paginator
 import requests
 from bs4 import BeautifulSoup
 import cloudscraper
-from operator import itemgetter 
 
 # Create your views here.
 def index(request):
     return render(request,"torrscrapper/index.html")
 
 def searchTorrents(request):
-    print("Search Method was called successfully")
     context={}
     if 'keywords' in request.GET:
         keywords=request.GET['keywords']
         context['search_flag']=True
         context['keywords']=keywords
+
 
         ##magnet dl
         keyword=keywords.lower()
@@ -27,22 +26,13 @@ def searchTorrents(request):
         order_by="desc"
         f_results2=[]
         on_1337x=True
-        print("This message is just before trying to send request")
+
         for i in range(1,3):
-            print("Right inside the for loop")
-            url="https://magnetdl.unblockit.ltd/"+keyword[0]+"/"+keyword.replace(' ','-')+"/se/"+order_by+'/'+str(i)+"/"
-            print("setting up url successfull")
+            url="https://magnetdl.unblockit.buzz/"+keyword[0]+"/"+keyword.replace(' ','-')+"/se/"+order_by+'/'+str(i)+"/"
+            print(url)
             scraper = cloudscraper.create_scraper(browser='chrome') ## to prevent cloud fare auto bot page to detect bots
-            print("Created the cloud scraper succesfully")
-            print("Now making the request")
-            try:
-                text=scraper.get(url).text
-                print("request was successfull")
-            except Exception as e:
-                print("There was an error "+str(e))
-                
+            text=scraper.get(url).text
             soup=BeautifulSoup(text,'html.parser')
-            print("Soup object success")
                 
             # getting all titles
             titles=soup.findAll(class_="n")
@@ -82,7 +72,7 @@ def searchTorrents(request):
         
         ###1337x
         if on_1337x:
-            url="https://1337x.unblockit.ltd/sort-search/"+keyword+"/seeders/"+order_by+"/"+str("1")+"/"
+            url="https://1337x.unblockit.buzz/sort-search/"+keyword+"/seeders/"+order_by+"/"+str("1")+"/"
             scraper = cloudscraper.create_scraper(browser='chrome') ## to prevent cloud fare auto bot page to detect bots
             text=scraper.get(url).text
             extracted_links2=[]
@@ -97,13 +87,12 @@ def searchTorrents(request):
                     magnet=""
                     href_link=href_link.replace("/","",1)
                     scraper = cloudscraper.create_scraper(browser='chrome')
-                    url="https://1337x.unblockit.ltd/"+href_link
+                    url="https://1337x.unblockit.buzz/"+href_link
                     text=scraper.get(url).text
                     soup=BeautifulSoup(text,'html.parser')
                     for link in soup.find_all("a"):
                         if len(link.get("href"))>100:
                             magnet=link.get("href")
-                            
                             
                             break
                     extracted_links2.append([items.contents[1].string,magnet,seeds.string,leeches.string,size.contents[0].string])
@@ -115,8 +104,7 @@ def searchTorrents(request):
                     f_results2.append(temp)
 
         results=f_results1+f_results2
-        results2=sorted(results, key = lambda item: int(item['seeds']),reverse=True)
-        context["torrents"]=results2
+        context["torrents"]=results
         return render(request,"torrscrapper/searchResults.html",context)
     return redirect('index')
 

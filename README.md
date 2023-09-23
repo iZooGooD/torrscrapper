@@ -12,7 +12,7 @@ Before you begin, ensure you have the following software installed:
 
 - Python 3.x (https://www.python.org/downloads/)
 - Django (https://www.djangoproject.com/download/)
-- Required Python packages (install using pip):
+- Required Python packages
 
 
 ### Start searching

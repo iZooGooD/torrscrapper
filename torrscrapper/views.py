@@ -1,17 +1,100 @@
-from django.shortcuts import render,redirect,get_object_or_404
-from django.contrib import messages,auth
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib import messages, auth
 from django.http import HttpResponse
-from torrscrapper.models import Movies,Games,Contact
-from django.core.paginator import EmptyPage,PageNotAnInteger,Paginator
+from torrscrapper.models import Movies, Games, Contact
+from django.core.paginator import Paginator
 import requests
 from bs4 import BeautifulSoup
 import cloudscraper
-from operator import itemgetter 
+
+# Constants for URLs
+MAGNET_DL_BASE_URL = "https://magnetdl.unblockit.esq/"
+X1337_BASE_URL = "https://1337x.unblockit.esq/"
+
 
 # Create your views here.
 def index(request):
     return render(request,"torrscrapper/index.html")
 
+def searchTorrents(request):
+    print("Search Method was called successfully")
+    context={}
+
+def searchTorrents(request):
+    context = {}
+    if 'keywords' in request.GET:
+        keywords = request.GET['keywords'].lower()
+        context['search_flag'] = True
+        context['keywords'] = keywords
+
+        extracted_links = []
+
+        for i in range(1, 3):
+            url = f"{MAGNET_DL_BASE_URL}{keywords[0]}/{keywords.replace(' ', '-')}/se/desc/{i}/"
+            text = make_request(url)
+            
+            if text:
+                soup = BeautifulSoup(text, 'html.parser')
+                extracted_links += extract_magnet_links(soup)
+
+        on_1337x = True  # You can set this flag based on your logic
+
+        if on_1337x:
+            url = f"{X1337_BASE_URL}sort-search/{keywords}/seeders/desc/1/"
+            text = make_request(url)
+            
+            if text:
+                soup = BeautifulSoup(text, 'html.parser')
+                extracted_links += extract_magnet_links(soup)
+
+        # Sorting the results by seeds in descending order
+        results = sorted(extracted_links, key=lambda item: int(item['seeds']), reverse=True)
+        context["torrents"] = results
+
+        return render(request, "torrscrapper/searchResults.html", context)
+
+    return redirect('index')
+
+# Helper Function for Making Requests
+def make_request(url):
+    try:
+        response = requests.get(url)
+        response.raise_for_status()
+        return response.text
+    except requests.exceptions.RequestException as e:
+        print(f"Error making request: {e}")
+        return ""
+
+# Helper Function for Extracting Magnet Links
+def extract_magnet_links(soup):
+    """
+    Extract magnet links from a BeautifulSoup object containing HTML data.
+
+    Args:
+        soup (BeautifulSoup): BeautifulSoup object containing HTML data.
+
+    Returns:
+        list: A list of dictionaries, each containing 'title' and 'magnet' keys.
+    """
+    extracted_links = []
+    
+    # Adjust this selector based on the structure of your HTML
+    torrent_items = soup.find_all('div', class_='torrent-item')
+
+    for item in torrent_items:
+        title = item.find('div', class_='title').text.strip()
+        magnet = item.find('a', class_='magnet-link')['href']
+        
+        extracted_links.append({'title': title, 'magnet': magnet})
+
+    return extracted_links
+
+
+# Helper Function for Validating Input Length
+def validate_input_length(value, min_length, max_length):
+    return min_length <= len(value) <= max_length
+
+# Search Torrents View
 def searchTorrents(request):
     print("Search Method was called successfully")
     context={}
@@ -30,7 +113,7 @@ def searchTorrents(request):
         print("This message is just before trying to send request")
         for i in range(1,3):
             print("Right inside the for loop")
-            url="https://magnetdl.unblockit.buzz/"+keyword[0]+"/"+keyword.replace(' ','-')+"/se/"+order_by+'/'+str(i)+"/"
+            url = f"{MAGNET_DL_BASE_URL}{keyword[0]}/{keyword.replace(' ', '-')}/se/{order_by}/{i}/"
             print("setting up url successfull")
             scraper = cloudscraper.create_scraper(browser='chrome') ## to prevent cloud fare auto bot page to detect bots
             print("Created the cloud scraper succesfully")
@@ -82,7 +165,7 @@ def searchTorrents(request):
         
         ###1337x
         if on_1337x:
-            url="https://1337x.unblockit.buzz/sort-search/"+keyword+"/seeders/"+order_by+"/"+str("1")+"/"
+            url = f"{X1337_BASE_URL}sort-search/{keyword}/seeders/{order_by}/1/"
             scraper = cloudscraper.create_scraper(browser='chrome') ## to prevent cloud fare auto bot page to detect bots
             text=scraper.get(url).text
             extracted_links2=[]
@@ -120,96 +203,104 @@ def searchTorrents(request):
         return render(request,"torrscrapper/searchResults.html",context)
     return redirect('index')
 
+# DMCA View
 def dmca(request):
-    return render(request,"torrscrapper/DMCA.html")
+    return render(request, "torrscrapper/DMCA.html")
 
+# Privacy Policy View
 def privacy_policy(request):
-    return render(request,"torrscrapper/privacy.html")
+    return render(request, "torrscrapper/privacy.html")
 
+# Contact Us View
 def contact_us(request):
-    context={}
-    context['submission']=False
-    context['errors']=[]
-    return render(request,"torrscrapper/contact.html",context)
+    context = {'submission': False, 'errors': []}
+    return render(request, "torrscrapper/contact.html", context)
 
+# Contact Form Submission View
 def contact_form_submit(request):
-    context={}
-    errors=[]
-    context['success']=False
-    name=request.POST['name']
-    email=request.POST['email']
-    subject=request.POST['subject']
-    message=request.POST['message']
-    if len(name)>100 or len(name)<2:
-        errors.append("Your name should be between 2 to 100 characters")
-    if len(subject)>200 or len(subject)<4:
-        errors.append("Your subject should be between 4 to 200 characters")
-    if len(message)>500 or len(message)<10:
-        errors.append("Message should be between 10 to 500 characters")
+    context = {'success': False, 'errors': []}
+    name = request.POST.get('name', '')
+    email = request.POST.get('email', '')
+    subject = request.POST.get('subject', '')
+    message = request.POST.get('message', '')
 
-    if len(errors)==0:
-        entry = Contact.objects.create(name=name,email=email,subject=subject,message=message)
-        context['success']=True
-        return render(request,"torrscrapper/contact.html",context)
-    else:
-        context['errors']=errors
-        context['success']=False
-        return render(request,"torrscrapper/contact.html",context)
+    if not validate_input_length(name, 2, 100):
+        context['errors'].append("Your name should be between 2 to 100 characters")
 
-    
+    if not validate_input_length(subject, 4, 200):
+        context['errors'].append("Your subject should be between 4 to 200 characters")
 
+    if not validate_input_length(message, 10, 500):
+        context['errors'].append("Message should be between 10 to 500 characters")
+
+    if not context['errors']:
+        entry = Contact.objects.create(name=name, email=email, subject=subject, message=message)
+        context['success'] = True
+
+    return render(request, "torrscrapper/contact.html", context)
+
+# Movies View
 def movies(request):
-    context={}
-    context['search_flag']=False
-    if 'keywords' in request.GET:
-        keywords=request.GET['keywords']
-        context['search_flag']=True
-        context['search_keywords']=keywords
-        all_entries = Movies.objects.all().filter(title__contains=keywords)
-        context['search_length']=len(all_entries)
-        paginator=Paginator(all_entries,15)
-        page=request.GET.get('page')
-        paged_listing=paginator.get_page(page)
-        context["all_movies"]=paged_listing
-        return render(request,"torrscrapper/category/movies.html",context)
+    context = {'search_flag': False}
+    keywords = request.GET.get('keywords', '')
 
-    all_entries = Movies.objects.all()
-    context['all_movies_length']=len(all_entries)
-    paginator=Paginator(all_entries,20)
-    page=request.GET.get('page')
-    paged_listing=paginator.get_page(page)
-    context["all_movies"]=paged_listing
-    return render(request,"torrscrapper/category/movies.html",context)
+    if keywords:
+        context['search_flag'] = True
+        context['search_keywords'] = keywords
 
-def movies_single(request,movie_id):
-    movie=get_object_or_404(Movies,pk=movie_id)
-    context={'movie':movie}
-    return render(request,"torrscrapper/category/movies_single.html",context)
+        all_entries = Movies.objects.filter(title__icontains=keywords)
+        context['search_length'] = len(all_entries)
 
+        paginator = Paginator(all_entries, 15)
+        page = request.GET.get('page')
+        paged_listing = paginator.get_page(page)
+        context["all_movies"] = paged_listing
+    else:
+        all_entries = Movies.objects.all()
+        context['all_movies_length'] = len(all_entries)
+
+        paginator = Paginator(all_entries, 20)
+        page = request.GET.get('page')
+        paged_listing = paginator.get_page(page)
+        context["all_movies"] = paged_listing
+
+    return render(request, "torrscrapper/category/movies.html", context)
+
+# Single Movie View
+def movies_single(request, movie_id):
+    movie = get_object_or_404(Movies, pk=movie_id)
+    context = {'movie': movie}
+    return render(request, "torrscrapper/category/movies_single.html", context)
+
+# Games View
 def games(request):
-    context={}
-    context['search_flag']=False
-    if 'keywords' in request.GET:
-        keywords=request.GET['keywords']
-        context['search_flag']=True
-        context['search_keywords']=keywords
-        all_entries = Games.objects.all().filter(title__contains=keywords)
-        context['search_length']=len(all_entries)
-        paginator=Paginator(all_entries,6)
-        page=request.GET.get('page')
-        paged_listing=paginator.get_page(page)
-        context["all_games"]=paged_listing
-        return render(request,"torrscrapper/category/games.html",context)
+    context = {'search_flag': False}
+    keywords = request.GET.get('keywords', '')
 
-    all_entries = Games.objects.all()
-    context['all_games_length']=len(all_entries)
-    paginator=Paginator(all_entries,6)
-    page=request.GET.get('page')
-    paged_listing=paginator.get_page(page)
-    context["all_games"]=paged_listing
-    return render(request,"torrscrapper/category/games.html",context)
+    if keywords:
+        context['search_flag'] = True
+        context['search_keywords'] = keywords
 
-def games_single(request,game_id):
-    game=get_object_or_404(Games,pk=game_id)
-    context={'game':game}
-    return render(request,"torrscrapper/category/games_single.html",context)
+        all_entries = Games.objects.filter(title__icontains=keywords)
+        context['search_length'] = len(all_entries)
+
+        paginator = Paginator(all_entries, 6)
+        page = request.GET.get('page')
+        paged_listing = paginator.get_page(page)
+        context["all_games"] = paged_listing
+    else:
+        all_entries = Games.objects.all()
+        context['all_games_length'] = len(all_entries)
+
+        paginator = Paginator(all_entries, 6)
+        page = request.GET.get('page')
+        paged_listing = paginator.get_page(page)
+        context["all_games"] = paged_listing
+
+    return render(request, "torrscrapper/category/games.html", context)
+
+# Single Game View
+def games_single(request, game_id):
+    game = get_object_or_404(Games, pk=game_id)
+    context = {'game': game}
+    return render(request, "torrscrapper/category/games_single.html", context)

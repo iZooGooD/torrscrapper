@@ -6,54 +6,11 @@ from django.core.paginator import Paginator
 import requests
 from bs4 import BeautifulSoup
 import cloudscraper
+from .constants import SiteURLs
+from .scraping_utils import scrape_data
 
-# Constants for URLs
-MAGNET_DL_BASE_URL = "https://magnetdl.unblockit.esq/"
-X1337_BASE_URL = "https://1337x.unblockit.esq/"
-
-
-# Create your views here.
 def index(request):
     return render(request,"torrscrapper/index.html")
-
-def searchTorrents(request):
-    print("Search Method was called successfully")
-    context={}
-
-def searchTorrents(request):
-    context = {}
-    if 'keywords' in request.GET:
-        keywords = request.GET['keywords'].lower()
-        context['search_flag'] = True
-        context['keywords'] = keywords
-
-        extracted_links = []
-
-        for i in range(1, 3):
-            url = f"{MAGNET_DL_BASE_URL}{keywords[0]}/{keywords.replace(' ', '-')}/se/desc/{i}/"
-            text = make_request(url)
-            
-            if text:
-                soup = BeautifulSoup(text, 'html.parser')
-                extracted_links += extract_magnet_links(soup)
-
-        on_1337x = True  # You can set this flag based on your logic
-
-        if on_1337x:
-            url = f"{X1337_BASE_URL}sort-search/{keywords}/seeders/desc/1/"
-            text = make_request(url)
-            
-            if text:
-                soup = BeautifulSoup(text, 'html.parser')
-                extracted_links += extract_magnet_links(soup)
-
-        # Sorting the results by seeds in descending order
-        results = sorted(extracted_links, key=lambda item: int(item['seeds']), reverse=True)
-        context["torrents"] = results
-
-        return render(request, "torrscrapper/searchResults.html", context)
-
-    return redirect('index')
 
 # Helper Function for Making Requests
 def make_request(url):
@@ -96,112 +53,11 @@ def validate_input_length(value, min_length, max_length):
 
 # Search Torrents View
 def searchTorrents(request):
-    print("Search Method was called successfully")
     context={}
-    if 'keywords' in request.GET:
-        keywords=request.GET['keywords']
-        context['search_flag']=True
-        context['keywords']=keywords
-
-        ##magnet dl
-        keyword=keywords.lower()
-        extracted_links=[] ## all data will be in this list
-        page_title="working"
-        order_by="desc"
-        f_results2=[]
-        on_1337x=True
-        print("This message is just before trying to send request")
-        for i in range(1,3):
-            print("Right inside the for loop")
-            url = f"{MAGNET_DL_BASE_URL}{keyword[0]}/{keyword.replace(' ', '-')}/se/{order_by}/{i}/"
-            print("setting up url successfull")
-            scraper = cloudscraper.create_scraper(browser='chrome') ## to prevent cloud fare auto bot page to detect bots
-            print("Created the cloud scraper succesfully")
-            print("Now making the request")
-            try:
-                text=scraper.get(url).text
-                print("request was successfull")
-            except Exception as e:
-                print("There was an error "+str(e))
-                
-            soup=BeautifulSoup(text,'html.parser')
-            print("Soup object success")
-                
-            # getting all titles
-            titles=soup.findAll(class_="n")
-            # torrents[0].contents[0]['title']
-            
-            # getting magnet
-            magnets=soup.findAll(class_="m")
-            # torrents[0].contents[0]['href']
-            # getting seeds
-            seeds=soup.findAll(class_="s")
-            # print(torrents[0].string)
-            # getting leeches
-            peers=soup.findAll(class_="l")
-            # print(torrents[0].string)
-            ####### get the sizes
-            sizes=[]
-            torrents=soup.findAll("tr")
-            for torrent in torrents:
-                try:
-                    if torrent.findChildren()[9].string=='Size':
-                        pass
-                    else:
-                        sizes.append(torrent.findChildren()[9].string)
-                except:
-                    pass
-            
-            
-            for title,link,seed,peer,size in zip(titles,magnets,seeds,peers,sizes):
-                try:
-                    extracted_links.append([title.contents[0]['title'],link.contents[0]['href'],seed.string,peer.string,size])
-                except:
-                    pass
-            f_results1=[]
-            for item in extracted_links:
-                temp={'title':item[0],'magnet':item[1],'seeds':item[2],'peers':item[3],'size':item[4]}
-                f_results1.append(temp)
-        
-        ###1337x
-        if on_1337x:
-            url = f"{X1337_BASE_URL}sort-search/{keyword}/seeders/{order_by}/1/"
-            scraper = cloudscraper.create_scraper(browser='chrome') ## to prevent cloud fare auto bot page to detect bots
-            text=scraper.get(url).text
-            extracted_links2=[]
-            soup=BeautifulSoup(text,'html.parser')
-            torrents=soup.findAll(class_="name")
-            find_seeds=soup.findAll(class_="seeds")
-            find_leeches=soup.findAll(class_="leeches")
-            find_sizes=soup.findAll(class_="size") 
-            for (items,seeds,leeches,size) in zip(torrents,find_seeds,find_leeches,find_sizes):
-                try:
-                    href_link=items.contents[1].get("href")
-                    magnet=""
-                    href_link=href_link.replace("/","",1)
-                    scraper = cloudscraper.create_scraper(browser='chrome')
-                    url="https://1337x.unblockit.buzz/"+href_link
-                    text=scraper.get(url).text
-                    soup=BeautifulSoup(text,'html.parser')
-                    for link in soup.find_all("a"):
-                        if len(link.get("href"))>100:
-                            magnet=link.get("href")
-                            
-                            
-                            break
-                    extracted_links2.append([items.contents[1].string,magnet,seeds.string,leeches.string,size.contents[0].string])
-                except:
-                    pass
-                f_results2=[]
-                for item in extracted_links2:
-                    temp={'title':item[0],'magnet':item[1],'seeds':item[2],'peers':item[3],'size':item[4]}
-                    f_results2.append(temp)
-
-        results=f_results1+f_results2
-        results2=sorted(results, key = lambda item: int(item['seeds']),reverse=True)
-        context["torrents"]=results2
-        return render(request,"torrscrapper/searchResults.html",context)
-    return redirect('index')
+    keywords = request.GET['keywords'].lower()
+    torrents_data_1337x = scrape_data(SiteURLs.X1337_BASE_URL, keywords)
+    context["torrents"]=torrents_data_1337x
+    return render(request,"torrscrapper/searchResults.html",context)
 
 # DMCA View
 def dmca(request):
@@ -234,7 +90,7 @@ def contact_form_submit(request):
         context['errors'].append("Message should be between 10 to 500 characters")
 
     if not context['errors']:
-        entry = Contact.objects.create(name=name, email=email, subject=subject, message=message)
+        Contact.objects.create(name=name, email=email, subject=subject, message=message)
         context['success'] = True
 
     return render(request, "torrscrapper/contact.html", context)

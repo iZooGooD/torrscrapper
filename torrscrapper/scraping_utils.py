@@ -1,6 +1,3 @@
-# app_name/scraping_utils.py
-
-import requests
 from bs4 import BeautifulSoup
 import cloudscraper
 from .constants import SiteURLs
@@ -10,8 +7,8 @@ import time
 
 # Configure the logging
 logging.basicConfig(
-    filename='scraping_logs.log',  # Name of the log file
-    level=logging.INFO,  # Set the logging level (change it as needed)
+    filename='scraping_logs.log',
+    level=logging.INFO,
     format='%(asctime)s - %(levelname)s - %(message)s',
     datefmt='%Y-%m-%d %H:%M:%S'
 )

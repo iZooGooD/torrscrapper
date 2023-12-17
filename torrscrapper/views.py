@@ -3,49 +3,11 @@ from django.contrib import messages, auth
 from django.http import HttpResponse
 from torrscrapper.models import Movies, Games, Contact
 from django.core.paginator import Paginator
-import requests
-from bs4 import BeautifulSoup
-import cloudscraper
 from .constants import SiteURLs
 from .scraping_utils import scrape_data
 
 def index(request):
     return render(request,"torrscrapper/index.html")
-
-# Helper Function for Making Requests
-def make_request(url):
-    try:
-        response = requests.get(url)
-        response.raise_for_status()
-        return response.text
-    except requests.exceptions.RequestException as e:
-        print(f"Error making request: {e}")
-        return ""
-
-# Helper Function for Extracting Magnet Links
-def extract_magnet_links(soup):
-    """
-    Extract magnet links from a BeautifulSoup object containing HTML data.
-
-    Args:
-        soup (BeautifulSoup): BeautifulSoup object containing HTML data.
-
-    Returns:
-        list: A list of dictionaries, each containing 'title' and 'magnet' keys.
-    """
-    extracted_links = []
-    
-    # Adjust this selector based on the structure of your HTML
-    torrent_items = soup.find_all('div', class_='torrent-item')
-
-    for item in torrent_items:
-        title = item.find('div', class_='title').text.strip()
-        magnet = item.find('a', class_='magnet-link')['href']
-        
-        extracted_links.append({'title': title, 'magnet': magnet})
-
-    return extracted_links
-
 
 # Helper Function for Validating Input Length
 def validate_input_length(value, min_length, max_length):

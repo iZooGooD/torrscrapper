@@ -19,6 +19,7 @@ def searchTorrents(request):
     keywords = request.GET['keywords'].lower()
     torrents_data_1337x = scrape_data(SiteURLs.X1337_BASE_URL, keywords)
     context["torrents"]=torrents_data_1337x
+    context["keywords"] = keywords
     return render(request,"torrscrapper/searchResults.html",context)
 
 # DMCA View

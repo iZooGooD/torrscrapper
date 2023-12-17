@@ -4,6 +4,8 @@ from .constants import SiteURLs
 import logging
 from datetime import datetime
 import time
+import asyncio
+import aiohttp
 
 # Configure the logging
 logging.basicConfig(
@@ -19,6 +21,33 @@ scraper = cloudscraper.create_scraper(browser='chrome')
 def scrape_data(url, keywords):
     if url == SiteURLs.X1337_BASE_URL:
         return get_1337x_torrents(keywords)
+
+async def fetch_magnet(session, magnet_url, torrent):
+    async with session.get(magnet_url) as response:
+        if response.status == 200:
+            magnet_content = await response.read()
+            magnet_soup = BeautifulSoup(magnet_content, 'html.parser')
+            magnet_link = magnet_soup.find('a', href=lambda href: href and 'magnet:?' in href)
+            if magnet_link:
+                torrent['magnet'] = magnet_link.get('href')
+            else:
+                torrent['magnet'] = ""
+        else:
+            print(f"Error fetching magnet link for {torrent['title']}")
+
+async def get_1337x_torrents_async(keywords, torrents):
+    async with aiohttp.ClientSession() as session:
+        tasks = []
+        for torrent in torrents:
+            magnet_url = torrent['magnet']
+            if magnet_url:
+                task = asyncio.create_task(fetch_magnet(session, magnet_url, torrent))
+                tasks.append(task)
+
+        # Limiting the number of parallel requests to 5 for now
+        chunk_size = 5
+        for i in range(0, len(tasks), chunk_size):
+            await asyncio.gather(*tasks[i:i + chunk_size])
 
 def get_1337x_torrents(keywords):
     start_time = time.time()
@@ -38,31 +67,21 @@ def get_1337x_torrents(keywords):
                 if len(name_col) >= 2 and name_col[1]['href'].startswith('/torrent/'):
                     name = name_col[1].text.strip()
                     href = SiteURLs.X1337_BASE_URL + name_col[1]['href']
-                    magnet_response = scraper.get(href)
-                    if magnet_response.status_code == 200:
-                        magnet_soup = BeautifulSoup(magnet_response.content, 'html.parser')
-                        magnet_link = magnet_soup.find('a', href=lambda href: href and 'magnet:?' in href)
-                        if magnet_link:
-                            magnet_href = magnet_link.get('href')
-                        else:
-                            magnet_href = "Magnet link not found"
-                    else:
-                        print(f"Error fetching magnet link for {name}")
-                        magnet_href = "Error fetching magnet"
-
                     seeds = cols[1].text
                     leeches = cols[2].text
                     size_element = cols[4].find(text=True, recursive=False).strip()
                     size = size_element if size_element else None
-
                     torrent = {
                         'title': name,
-                        'magnet': magnet_href,
+                        'magnet': href,
                         'seeds': seeds,
                         'peers': leeches,
                         'size': size
                     }
                     torrents.append(torrent)
+
+        asyncio.run(get_1337x_torrents_async(keywords, torrents))  # Call the asynchronous function
+
         logging.info(f"Collected {len(torrents)} torrents")
         end_time = time.time()  # Record the end time
         time_taken = end_time - start_time  # Calculate time taken

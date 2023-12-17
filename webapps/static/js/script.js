@@ -1,16 +1,15 @@
-document.querySelector("#menu-bar").addEventListener("click",openMobileMenu);
-document.querySelector("#close-menu").addEventListener("click",closeMobileMenu);
-function openMobileMenu(){
-    document.querySelector(".mobile-menu").style.opacity="1";
-    document.querySelector(".mobile-menu").style.width="50%";
-    document.querySelector("#close-menu").style.animationName="animate";
-    document.querySelector("#close-menu").style.animationDuration="1s";
-    document.querySelector("#menu-bar").style.display="none";
-}
-function closeMobileMenu(){
-    document.querySelector(".mobile-menu").style.width="0";
-    document.querySelector("#close-menu").style.animationName="";
-    document.querySelector("#close-menu").style.animationDuration="";
-    document.querySelector(".mobile-menu").style.opacity="0";
-    document.querySelector("#menu-bar").style.display="block";
-}
+document.querySelector("#menu-bar").addEventListener("click", () => {
+    const mobileMenu = document.querySelector(".mobile-menu");
+    mobileMenu.style.opacity = "1";
+    mobileMenu.style.width = "50%";
+    document.querySelector("#close-menu").style.animation = "animate 1s";
+    document.querySelector("#menu-bar").style.display = "none";
+});
+
+document.querySelector("#close-menu").addEventListener("click", () => {
+    const mobileMenu = document.querySelector(".mobile-menu");
+    mobileMenu.style.width = "0";
+    document.querySelector("#close-menu").style.animation = "";
+    mobileMenu.style.opacity = "0";
+    document.querySelector("#menu-bar").style.display = "block";
+});

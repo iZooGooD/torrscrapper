@@ -8,43 +8,27 @@
         </div>
     </form>
     <h5 class="my-3 text-white">Found total {{ torrents|length }} results for "{{ keywords }}"</h5>
-
-
-
     <div class="_results">
-    <table class="table _table table-dark">
-        <thead>
+        <table class="table _table table-dark">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Seeds</th>
+                    <th>Peers</th>
+                    <th>Size</th>
+                    <th>Download</th>
+                </tr>
+            </thead>
+            {% for torrent in torrents %}
             <tr>
-                <th>Title</th>
-                <th>Seeds</th>
-                <th>Peers</th>
-                <th>Size</th>
-                <th>Download</th>
+                <td>{{ torrent.title}}</td>
+                <td>{{ torrent.seeds }}</td>
+                <td>{{ torrent.peers }}</td>
+                <td>{{ torrent.size }}</td>
+                <td><a class="download-magnet" href="{{ torrent.magnet }}">Download</a></td>
             </tr>
-        </thead>
-
-{% for torrent in torrents %}
-    <tr>
-        <td>{{ torrent.title}}</td>
-        <td>{{ torrent.seeds }}</td>
-        <td>{{ torrent.peers }}</td>
-        <td>{{ torrent.size }}</td>
-        <td><a class="download-magnet" href="{{ torrent.magnet }}">Download</a></td>
-    </tr>
-{% endfor %}
-
-
-
-
-    </table>
-
-
-
+            {% endfor %}
+        </table>
     </div>
-
-    
 </div>
-
-
-
 {% endblock %}

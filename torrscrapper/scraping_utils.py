@@ -6,6 +6,8 @@ from datetime import datetime
 import time
 import asyncio
 import aiohttp
+import humanize
+import urllib.parse
 
 # Configure the logging
 logging.basicConfig(
@@ -18,9 +20,40 @@ logging.basicConfig(
 ## global variables
 scraper = cloudscraper.create_scraper(browser='chrome')
 
-def scrape_data(url, keywords):
-    if url == SiteURLs.X1337_BASE_URL:
-        return get_1337x_torrents(keywords)
+def scrape_data(keywords):
+    site_scrapers = {
+        SiteURLs.X1337_BASE_URL: get_1337x_torrents,
+        SiteURLs.PIRATE_BAY_BASE_URL: get_pirate_bay_torrents
+    }
+    combined_results = []
+
+    overall_start_time = time.time()
+    logging.info("---------------------------------------------------")
+    logging.info("Starting the scraping session")
+
+    for index, (site_url, scraper_function) in enumerate(site_scrapers.items(), start=1):
+        start_time = time.time()
+        logging.info(f"Site #{index} - Starting scraping for site: {site_url}")
+
+        # Append results from each site to the combined_results list
+        combined_results.extend(scraper_function(keywords))
+
+        end_time = time.time()
+        time_taken = end_time - start_time
+        logging.info(f"Site #{index} - Completed scraping. Time taken: {time_taken:.2f} seconds")
+        logging.info(f"Site #{index} - --------------------------------")
+
+    overall_end_time = time.time()
+    overall_time_taken = overall_end_time - overall_start_time
+    logging.info(f"Ending the scraping session. Total time taken: {overall_time_taken:.2f} seconds")
+    logging.info(f"Overall collected {len(combined_results)} torrents")
+    logging.info("---------------------------------------------------")
+
+    return sort_torrents_by_seeds(combined_results)
+
+# Function to sort torrents by the number of seeds
+def sort_torrents_by_seeds(torrents):
+    return sorted(torrents, key=lambda x: int(x['seeds']), reverse=True)
 
 async def fetch_magnet(session, magnet_url, torrent):
     async with session.get(magnet_url) as response:
@@ -55,8 +88,6 @@ def get_1337x_torrents(keywords):
     search_url = SiteURLs.X1337_BASE_URL + '/search/' + keywords + '/1/'
     response = scraper.get(search_url)
     if response.status_code == 200:
-        logging.info(f"---------------------------------------------------")
-        logging.info(f"Starting the scrapper")
         logging.info(f"Initial request to site {search_url} was successful")
         soup = BeautifulSoup(response.content, 'html.parser')
         rows = soup.find_all('tr')
@@ -81,17 +112,71 @@ def get_1337x_torrents(keywords):
                     torrents.append(torrent)
 
         asyncio.run(get_1337x_torrents_async(keywords, torrents))  # Call the asynchronous function
-
         logging.info(f"Collected {len(torrents)} torrents")
-        end_time = time.time()  # Record the end time
-        time_taken = end_time - start_time  # Calculate time taken
-        logging.info(f"Time taken for scraping: {time_taken:.2f} seconds")
-        logging.info(f"Ending the scrapper")
-        logging.info(f"---------------------------------------------------")
         return torrents
     else:
-        print(f"Error in initial request. Status code: {response.status_code}")
-        print(f"Maybe site name/extenion has changed ?")
-        logging.error(f"Error in initial request. Status code: {response.status_code}")
-        logging.error("Maybe site name/extension has changed?")
+        logging.error(f"Failed to scrape 1337x. Status code: {response.status_code}")
         return []
+
+def create_magnet_pirate_bay(info_hash, name):
+    """
+    Generates a magnet link for a torrent from The Pirate Bay.
+
+    Pirate Bay uses custom JavaScript to generate magnet links for its torrents.
+    This function replicates that functionality in Python, creating a magnet link
+    that includes the necessary trackers.
+
+    Parameters:
+    info_hash (str): The information hash of the torrent.
+    name (str): The name of the torrent.
+
+    Returns:
+    str: A magnet link for the given torrent.
+    """
+
+    trackers = [
+        'udp://tracker.coppersurfer.tk:6969/announce',
+        'udp://tracker.openbittorrent.com:6969/announce',
+        'udp://9.rarbg.to:2710/announce',
+        'udp://9.rarbg.me:2780/announce',
+        'udp://9.rarbg.to:2730/announce',
+        'udp://tracker.opentrackr.org:1337',
+        'http://p4p.arenabg.com:1337/announce',
+        'udp://tracker.torrent.eu.org:451/announce',
+        'udp://tracker.tiny-vps.com:6969/announce',
+        'udp://open.stealth.si:80/announce'
+    ]
+
+    tracker_str = ''.join(['&tr=' + urllib.parse.quote(tracker) for tracker in trackers])
+    magnet_link = f'magnet:?xt=urn:btih:{info_hash}&dn={urllib.parse.quote(name)}{tracker_str}'
+
+    return magnet_link
+
+def get_pirate_bay_torrents(keywords):
+
+    torrents = []
+    search_url = SiteURLs.PIRATE_BAY_BASE_URL + 'q=' + keywords 
+    response = scraper.get(search_url)
+
+    if response.status_code == 200:
+        logging.info(f"Initial request to site {search_url} was successful")
+        json_data = response.json()
+        for item in json_data:
+            name = item.get("name")
+            info_hash = item.get("info_hash")
+            seeders = item.get("seeders")
+            leechers = item.get("leechers")
+            size = humanize.naturalsize(int(item.get("size")), binary=True)  # Converts bytes to human-readable format
+            torrent = {
+                'title': name,
+                'seeds': seeders,
+                'peers': leechers,
+                'magnet': create_magnet_pirate_bay(info_hash, name),
+                'size': size
+            }
+            torrents.append(torrent)
+        logging.info(f"Collected {len(torrents)} torrents")
+    else:
+        logging.error(f"Failed to scrape Pirate Bay. Status code: {response.status_code}")
+
+    return torrents

@@ -36,7 +36,7 @@ def scrape_data(keywords):
         logging.info(f"Site #{index} - Starting scraping for site: {site_url}")
 
         # Append results from each site to the combined_results list
-        combined_results.extend(scraper_function(keywords))
+        combined_results.extend(scraper_function(keywords, index))
 
         end_time = time.time()
         time_taken = end_time - start_time
@@ -82,13 +82,12 @@ async def get_1337x_torrents_async(keywords, torrents):
         for i in range(0, len(tasks), chunk_size):
             await asyncio.gather(*tasks[i:i + chunk_size])
 
-def get_1337x_torrents(keywords):
-    start_time = time.time()
+def get_1337x_torrents(keywords, index):
     torrents = []
     search_url = SiteURLs.X1337_BASE_URL + '/search/' + keywords + '/1/'
     response = scraper.get(search_url)
     if response.status_code == 200:
-        logging.info(f"Initial request to site {search_url} was successful")
+        logging.info(f"Site #{index} - Initial request to site {search_url} was successful")
         soup = BeautifulSoup(response.content, 'html.parser')
         rows = soup.find_all('tr')
         for row in rows:
@@ -112,7 +111,7 @@ def get_1337x_torrents(keywords):
                     torrents.append(torrent)
 
         asyncio.run(get_1337x_torrents_async(keywords, torrents))  # Call the asynchronous function
-        logging.info(f"Collected {len(torrents)} torrents")
+        logging.info(f"Site #{index} - Collected {len(torrents)} torrents")
         return torrents
     else:
         logging.error(f"Failed to scrape 1337x. Status code: {response.status_code}")
@@ -152,14 +151,13 @@ def create_magnet_pirate_bay(info_hash, name):
 
     return magnet_link
 
-def get_pirate_bay_torrents(keywords):
-
+def get_pirate_bay_torrents(keywords, index):
     torrents = []
     search_url = SiteURLs.PIRATE_BAY_BASE_URL + 'q=' + keywords 
     response = scraper.get(search_url)
 
     if response.status_code == 200:
-        logging.info(f"Initial request to site {search_url} was successful")
+        logging.info(f"Site #{index} - Initial request to site {search_url} was successful")
         json_data = response.json()
         for item in json_data:
             name = item.get("name")
@@ -175,8 +173,8 @@ def get_pirate_bay_torrents(keywords):
                 'size': size
             }
             torrents.append(torrent)
-        logging.info(f"Collected {len(torrents)} torrents")
+        logging.info(f"Site #{index} - Collected {len(torrents)} torrents")
     else:
-        logging.error(f"Failed to scrape Pirate Bay. Status code: {response.status_code}")
+        logging.error(f"Site #{index} - Failed to scrape Pirate Bay. Status code: {response.status_code}")
 
     return torrents

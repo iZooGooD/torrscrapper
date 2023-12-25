@@ -8,14 +8,26 @@ import asyncio
 import aiohttp
 import humanize
 import urllib.parse
+import sys
 
-# Configure the logging
-logging.basicConfig(
-    filename='scraping_logs.log',
-    level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(message)s',
-    datefmt='%Y-%m-%d %H:%M:%S'
-)
+# Create a logger object
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
+
+# Formatter for the log messages
+formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
+
+# File handler for outputting log messages to a file
+file_handler = logging.FileHandler('scraping_logs.log', encoding='utf-8')
+file_handler.setFormatter(formatter)
+
+# Stream handler for outputting log messages to the console
+stream_handler = logging.StreamHandler(sys.stdout)
+stream_handler.setFormatter(formatter)
+
+# Adding handlers to the logger
+logger.addHandler(file_handler)
+logger.addHandler(stream_handler)
 
 ## global variables
 scraper = cloudscraper.create_scraper(browser='chrome')
@@ -29,11 +41,12 @@ def scrape_data(keywords):
 
     overall_start_time = time.time()
     logging.info("---------------------------------------------------")
-    logging.info("Starting the scraping session")
+    print("Starting the scraping session")
+    logging.info(" 🚀Starting the scraping session")
 
     for index, (site_url, scraper_function) in enumerate(site_scrapers.items(), start=1):
         start_time = time.time()
-        logging.info(f"Site #{index} - Starting scraping for site: {site_url}")
+        logging.info(f"🌐 Site #{index} - Starting scraping for site: {site_url}")
 
         # Append results from each site to the combined_results list
         combined_results.extend(scraper_function(keywords, index))
@@ -45,7 +58,7 @@ def scrape_data(keywords):
 
     overall_end_time = time.time()
     overall_time_taken = overall_end_time - overall_start_time
-    logging.info(f"Ending the scraping session. Total time taken: {overall_time_taken:.2f} seconds")
+    logging.info(f"🎉 Ending the scraping session. Total time taken: {overall_time_taken:.2f} seconds")
     logging.info(f"Overall collected {len(combined_results)} torrents")
     logging.info("---------------------------------------------------")
 

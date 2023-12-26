@@ -3,7 +3,6 @@ from django.contrib import messages, auth
 from django.http import HttpResponse
 from torrscrapper.models import Movies, Games, Contact
 from django.core.paginator import Paginator
-from .constants import SiteURLs
 from .scraping_utils import scrape_data
 
 def index(request):
@@ -17,8 +16,8 @@ def validate_input_length(value, min_length, max_length):
 def searchTorrents(request):
     context={}
     keywords = request.GET['keywords'].lower()
-    torrents_data_1337x = scrape_data(keywords)
-    context["torrents"]= torrents_data_1337x
+    torrents_data = scrape_data(keywords)
+    context["torrents"]= torrents_data
     context["keywords"] = keywords
     return render(request,"torrscrapper/searchResults.html",context)
 

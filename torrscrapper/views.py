@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages, auth
 from django.http import HttpResponse
 from torrscrapper.models import Movies, Games, Contact
-from django.core.paginator import Paginator
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .scraping_utils import scrape_data
 
 def index(request):
@@ -65,23 +65,24 @@ def movies(request):
     if keywords:
         context['search_flag'] = True
         context['search_keywords'] = keywords
-
-        all_entries = Movies.objects.filter(title__icontains=keywords)
-        context['search_length'] = len(all_entries)
-
-        paginator = Paginator(all_entries, 15)
-        page = request.GET.get('page')
-        paged_listing = paginator.get_page(page)
-        context["all_movies"] = paged_listing
+        movies_queryset = Movies.objects.filter(title__icontains=keywords)
+        paginator = Paginator(movies_queryset, 15)
     else:
-        all_entries = Movies.objects.all()
-        context['all_movies_length'] = len(all_entries)
+        movies_queryset = Movies.objects.all()
+        paginator = Paginator(movies_queryset, 20)
 
-        paginator = Paginator(all_entries, 20)
-        page = request.GET.get('page')
-        paged_listing = paginator.get_page(page)
-        context["all_movies"] = paged_listing
+    movies_count = movies_queryset.count()
+    page_number = request.GET.get('page', 1)  # Default to page 1 if not provided
 
+    try:
+        paged_movies = paginator.page(page_number)
+    except PageNotAnInteger:
+        paged_movies = paginator.page(1)
+    except EmptyPage:
+        paged_movies = paginator.page(paginator.num_pages)
+
+    context['all_movies_length'] = movies_count
+    context['all_movies'] = paged_movies
     return render(request, "torrscrapper/category/movies.html", context)
 
 # Single Movie View
@@ -98,23 +99,23 @@ def games(request):
     if keywords:
         context['search_flag'] = True
         context['search_keywords'] = keywords
-
-        all_entries = Games.objects.filter(title__icontains=keywords)
-        context['search_length'] = len(all_entries)
-
-        paginator = Paginator(all_entries, 6)
-        page = request.GET.get('page')
-        paged_listing = paginator.get_page(page)
-        context["all_games"] = paged_listing
+        games_queryset = Games.objects.filter(title__icontains=keywords)
     else:
-        all_entries = Games.objects.all()
-        context['all_games_length'] = len(all_entries)
+        games_queryset = Games.objects.all()
 
-        paginator = Paginator(all_entries, 6)
-        page = request.GET.get('page')
-        paged_listing = paginator.get_page(page)
-        context["all_games"] = paged_listing
+    games_count = games_queryset.count()
+    paginator = Paginator(games_queryset, 6)
+    page_number = request.GET.get('page', 1)
 
+    try:
+        paged_games = paginator.page(page_number)
+    except PageNotAnInteger:
+        paged_games = paginator.page(1)
+    except EmptyPage:
+        paged_games = paginator.page(paginator.num_pages)
+
+    context['all_games_length'] = games_count
+    context['all_games'] = paged_games
     return render(request, "torrscrapper/category/games.html", context)
 
 # Single Game View

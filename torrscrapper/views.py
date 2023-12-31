@@ -16,7 +16,9 @@ def validate_input_length(value, min_length, max_length):
 def searchTorrents(request):
     context={}
     keywords = request.GET['keywords'].lower()
-    torrents_data = scrape_data(keywords)
+    keywords = request.GET['keywords'].lower()
+    selected_sites = request.GET.getlist('sites')
+    torrents_data = scrape_data(keywords, selected_sites)
     context["torrents"]= torrents_data
     context["keywords"] = keywords
     return render(request,"torrscrapper/searchResults.html",context)

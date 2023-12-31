@@ -32,10 +32,10 @@ logger.addHandler(stream_handler)
 ## global variables
 scraper = cloudscraper.create_scraper(browser='chrome')
 
-def scrape_data(keywords):
+def scrape_data(keywords, selected_sites):
     site_scrapers = {
-        SiteURLs.X1337_BASE_URL: get_1337x_torrents,
-        SiteURLs.PIRATE_BAY_BASE_URL: get_pirate_bay_torrents
+        '1337x': get_1337x_torrents,
+        'pirate_bay': get_pirate_bay_torrents
     }
     combined_results = []
 
@@ -44,9 +44,15 @@ def scrape_data(keywords):
     print("Starting the scraping session")
     logging.info(" 🚀Starting the scraping session")
 
-    for index, (site_url, scraper_function) in enumerate(site_scrapers.items(), start=1):
-        start_time = time.time()
-        logging.info(f"🌐 Site #{index} - Starting scraping for site: {site_url}")
+    # If no sites are selected, scrape from all sites
+    if not selected_sites:
+        selected_sites = site_scrapers.keys()
+
+    for index, site_key in enumerate(selected_sites, start=1):
+        if site_key in site_scrapers:
+            scraper_function = site_scrapers[site_key]
+            start_time = time.time()
+        logging.info(f"🌐 Site #{index} - Starting scraping for site: {site_key}")
 
         # Append results from each site to the combined_results list
         combined_results.extend(scraper_function(keywords, index))

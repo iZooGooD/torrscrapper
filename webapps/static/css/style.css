@@ -12,20 +12,15 @@
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
-
-
 }
 
 ._main {
     background-color: #171717 !important;
     background-image: url("/static/img/Hanging-Spider-PNG-File.png");
-
     background-repeat: no-repeat;
-
     background-position: center -500px;
     background-size: cover;
     height: 1000px !important;
-
 }
 
 body {
@@ -34,7 +29,6 @@ body {
 
 ._navbar {
     margin: auto;
-
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
@@ -60,8 +54,6 @@ body {
     cursor: pointer;
     position: absolute;
     left: 2%;
-
-
 }
 
 ._navbar-main ul a {
@@ -105,14 +97,11 @@ body {
     right: 3%;
     top: 1%;
     color: white;
-
-
 }
 
 ._navbar-main ._navbar-brand {
     font-family: 'Creepster', cursive;
     font-size: 1.8rem;
-
 }
 
 ._navbar-main ._navbar-brand:hover {
@@ -120,7 +109,6 @@ body {
 }
 
 ._navbar-main .headline {
-
     color: white;
     margin: 10px;
     font-size: 14px;
@@ -143,11 +131,9 @@ body {
     font-size: 1.3rem;
     color: #fff;
     text-decoration: none !important;
-
 }
 
 .section_search_box {
-
     display: flex;
     height: 700px;
     justify-content: center;
@@ -182,7 +168,6 @@ form {
 }
 
 ._s_button {
-
     border: none;
     padding: 15px 40px;
     background-color: #6AC045;
@@ -197,7 +182,6 @@ form {
 
 ._notice {
     width: 100%;
-
 }
 
 ._popular_terms {
@@ -218,7 +202,6 @@ form {
     margin: 6px;
     border-radius: 20px;
     transition: all 0.3s ease;
-
 }
 
 ._popular_terms ._terms:hover {
@@ -270,16 +253,11 @@ form {
     }
 
     ._popular_terms {
-
         flex-wrap: wrap;
-
     }
-
-    ._popular_terms ._terms {}
 
     ._tags-title {
         display: block;
-
     }
 
     ._terms {
@@ -301,7 +279,6 @@ form {
 
     ._s_box {
         padding: 13px 35px;
-
     }
 
     .all_games_post .card-img img {
@@ -324,8 +301,6 @@ form {
 
     .all_movies_post {
         padding: 3px !important;
-
-
     }
 
     .all_movies_post h5,
@@ -338,7 +313,6 @@ form {
         color: white;
         padding: 5px;
         font-size: 0.8rem !important;
-
     }
 
     .all_movies_post img {
@@ -347,10 +321,7 @@ form {
 
     .but {
         margin: 0 !important;
-        ;
         width: 100%;
-
-
     }
 
     .form_movies ._s_box {
@@ -363,7 +334,6 @@ form {
 
     .form_movies {
         width: 95% !important;
-        ;
     }
 
     ._main {
@@ -372,10 +342,8 @@ form {
     }
 
     .my_paging {
-
         justify-content: start;
         font-size: 0.8rem !important;
-
         flex-wrap: wrap !important;
     }
 
@@ -383,9 +351,7 @@ form {
         max-width: 350px !important;
         display: flex !important;
         flex-wrap: wrap;
-
     }
-
 }
 
 
@@ -395,7 +361,6 @@ form {
     background-color: #171717 !important;
     border: 1px solid #333333 !important;
     margin: 10px;
-
 }
 
 .download-button {
@@ -426,8 +391,6 @@ form {
 .my_paging {
     display: flex;
     justify-content: center;
-
-
 }
 
 
@@ -436,7 +399,6 @@ form {
 
 .games_post_single img {
     max-width: 440px !important;
-
 }
 
 .games_post {
@@ -454,10 +416,7 @@ form {
 }
 
 
-
-
 /** movies section **/
-
 .all_movies_post img {
     width: 150px;
     height: 180px;
@@ -465,7 +424,6 @@ form {
 
 .all_movies_img {
     height: 190px;
-
 }
 
 .card-header {
@@ -496,7 +454,6 @@ form {
 /** dmca page **/
 
 .dmca-policy {
-
     word-spacing: 0.3rem;
 }
 
@@ -505,9 +462,7 @@ form {
 }
 
 /*Footer styling*/
-
 footer {
-
     border-top: 1px solid #333333;
     background-color: #171717;
     display: flex !important;
@@ -516,7 +471,6 @@ footer {
     justify-content: center;
     flex-wrap: wrap;
     padding: 10px;
-
 }
 
 footer small {
@@ -559,15 +513,12 @@ footer .follow-links a:hover {
     border: 1px solid #333333 !important;
     box-shadow: none !important;
     color: white;
-
 }
 
 .contact_form textarea {
     background-color: #1D1D1D;
-
     border: 1px solid #333333;
     color: white;
-
 }
 
 .contact_form textarea:focus {
@@ -575,7 +526,6 @@ footer .follow-links a:hover {
     border: 1px solid #333333 !important;
     box-shadow: none !important;
     color: white;
-
 }
 
 .contact_form .from-group {
@@ -595,8 +545,6 @@ footer .follow-links a:hover {
 }
 
 /** privacy section **/
-
 .privacy-section {
-
     margin: 30px 0;
 }

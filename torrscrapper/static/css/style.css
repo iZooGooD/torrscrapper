@@ -1,13 +1,13 @@
-*{
+* {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
     font-family: 'Poppins', sans-serif;
 }
 
-._navbar-main{
+._navbar-main {
     background-color: #1D1D1D;
-     border-bottom: 1px solid #333333;
+    border-bottom: 1px solid #333333;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -18,53 +18,58 @@
 
 
 ._main {
-    background-color: #171717!important;
-    background-image:  url("/static/img/Hanging-Spider-PNG-File.png");
+    background-color: #171717 !important;
+    background-image: url("/static/img/Hanging-Spider-PNG-File.png");
 
     background-repeat: no-repeat;
 
-    background-position:center -500px;
+    background-position: center -500px;
     background-size: cover;
     height: 1000px !important;
-  
+
 }
-body{
-    background-color: #171717!important;
+
+body {
+    background-color: #171717 !important;
 }
-._navbar{
+
+._navbar {
     margin: auto;
 
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
-    
+
 }
-.mobile-menu{
+
+.mobile-menu {
     position: fixed;
-    top:0;
+    top: 0;
     height: 100%;
-    width:0;
+    width: 0;
     overflow: hidden;
-    box-shadow:  0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     background-color: #171717;
     transition: all ease-in 0.5s;
     z-index: 5;
 }
-#menu-bar{
-    font-size:1.6rem;
+
+#menu-bar {
+    font-size: 1.6rem;
     color: white;
     display: none;
-   cursor: pointer;
-   position: absolute;
-   left:2%;
-  
-   
+    cursor: pointer;
+    position: absolute;
+    left: 2%;
+
+
 }
-._navbar-main  ul a{
+
+._navbar-main ul a {
     position: relative;
 }
 
-._navbar-main  ul a:before {
+._navbar-main ul a:before {
     content: "";
     position: absolute;
     width: 100%;
@@ -75,339 +80,378 @@ body{
     visibility: hidden;
     transform: scaleX(0);
     transition: all 0.5s ease-in-out;
-  }
-  ._navbar-main  ul a:hover:before {
-      visibility: visible;
-      transform: scaleX(1);
-    }
+}
 
-.dropdown-menu-item a{
-    margin:20px!important;
-    padding:5px;
-    color:white;
+._navbar-main ul a:hover:before {
+    visibility: visible;
+    transform: scaleX(1);
+}
+
+.dropdown-menu-item a {
+    margin: 20px !important;
+    padding: 5px;
+    color: white;
     text-decoration: none;
     font-size: 1.1rem;
 }
-.dropdown-menu-item a{
-    margin-top:5px!important;
+
+.dropdown-menu-item a {
+    margin-top: 5px !important;
 }
-#close-menu{
+
+#close-menu {
     cursor: pointer;
     position: absolute;
-    font-size:1.4rem;
-    right:3%;
-    top:1%;
-    color:white;
+    font-size: 1.4rem;
+    right: 3%;
+    top: 1%;
+    color: white;
 
 
 }
 
-._navbar-main ._navbar-brand{
+._navbar-main ._navbar-brand {
     font-family: 'Creepster', cursive;
     font-size: 1.8rem;
 
 }
-._navbar-main ._navbar-brand:hover{
-    color:white;
-}
-._navbar-main .headline{
 
-    color:white;
-    margin:10px;
+._navbar-main ._navbar-brand:hover {
+    color: white;
+}
+
+._navbar-main .headline {
+
+    color: white;
+    margin: 10px;
     font-size: 14px;
 }
 
-._navbar li{
+._navbar li {
     display: inline;
     padding: 20px;
 
 }
 
-._navbar li a{
-    color:#fff;
-    text-decoration: none!important;
+._navbar li a {
+    color: #fff;
+    text-decoration: none !important;
 }
 
-._navbar-brand{
+._navbar-brand {
     margin-left: auto;
     margin-left: 1.5rem;
     font-size: 1.3rem;
-    color:#fff;
-    text-decoration: none!important;
+    color: #fff;
+    text-decoration: none !important;
 
 }
 
-.section_search_box{
+.section_search_box {
 
     display: flex;
     height: 700px;
     justify-content: center;
     align-items: center;
-    width:100%;
+    width: 100%;
     flex-direction: column;
 }
-form{
+
+form {
     width: 100%;
-}
-._form-group{
- display: flex;
-    width: 100%;
-}
-._s_box{
-    border: none;
-  border-top-left-radius: 10px; 
-  border-bottom-left-radius:10px;
-padding: 15px 40px;
-border:1px solid rgb(43, 40, 40);
-width: 80%;
-outline: none;
 }
 
-._s_box:focus{
+._form-group {
+    display: flex;
+    width: 100%;
+}
+
+._s_box {
+    border: none;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    padding: 15px 40px;
+    border: 1px solid rgb(43, 40, 40);
+    width: 80%;
+    outline: none;
+}
+
+._s_box:focus {
     box-shadow: 0 0 5px rgba(81, 203, 238, 1);
- 
+
     border: 1px solid rgba(81, 203, 238, 1);
 }
-._s_button{
- 
+
+._s_button {
+
     border: none;
     padding: 15px 40px;
     background-color: #6AC045;
-    color:white;
+    color: white;
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
 }
 
-._s_button:hover{
+._s_button:hover {
     background-color: #41742b;
 }
 
-._notice{
+._notice {
     width: 100%;
-  
-}
-._popular_terms{
-width: 100%;
-display: flex;
-align-items: center;
+
 }
 
-.p_head{
-    color:#6AC045;
+._popular_terms {
+    width: 100%;
+    display: flex;
+    align-items: center;
 }
-._popular_terms ._terms{
-    text-decoration: none!important;
+
+.p_head {
+    color: #6AC045;
+}
+
+._popular_terms ._terms {
+    text-decoration: none !important;
     background-color: #6AC045;
-    padding:10px;
-    color:white;
+    padding: 10px;
+    color: white;
     margin: 6px;
     border-radius: 20px;
-    transition:all 0.3s ease;
-  
+    transition: all 0.3s ease;
+
 }
-._popular_terms ._terms:hover{
+
+._popular_terms ._terms:hover {
     transform: translateY(10px);
     background-color: #40742b;
 }
 
-._table thead{
+._table thead {
     background-color: rgb(43, 40, 40);
-    color:white;
+    color: white;
 }
-._table td{
-    color:white;
+
+._table td {
+    color: white;
 }
-._sortbox{
+
+._sortbox {
     text-align: end;
 }
-.download-magnet{
+
+.download-magnet {
     background-color: #6AC045;
-    padding:5px;
-    color:white;
-    margin:10px;
+    padding: 5px;
+    color: white;
+    margin: 10px;
     text-decoration: none;
     transition: 0.4s;
 }
-.download-magnet:hover{
-    color:white;
+
+.download-magnet:hover {
+    color: white;
     border-radius: 4px;
     background-color: #41742b;
 }
 
-@media screen and (max-width:601px){
-    #menu-bar{
+@media screen and (max-width:601px) {
+    #menu-bar {
         display: none;
     }
 }
 
-@media screen and (max-width:600px){
-.container{
-    font-size:0.9rem;
-}
-#menu-bar{
-    display: block;
-}
-._popular_terms{
+@media screen and (max-width:600px) {
+    .container {
+        font-size: 0.9rem;
+    }
 
-    flex-wrap: wrap;
-    
-}
-._popular_terms ._terms{
-   
-}
-._tags-title{
-   display: block;
-   
-}
+    #menu-bar {
+        display: block;
+    }
 
-._terms{
-    padding: 5px!important;
-}
-._navbar{
-    display: none;
-}
-._navbar-main{
-    height:80px;
-}
+    ._popular_terms {
 
-._s_button{
- width:100px;
- padding:5px;
-}
-._s_box{
-    padding: 13px 35px;
+        flex-wrap: wrap;
 
-}
-.all_games_post .card-img img{
-    max-width:320px!important;
-}
-.all_games_post{
-    max-width: 340px!important;
-    margin: auto;
-    margin-top:10px!important;
-}
-.games_post_single{
-width: 90%!important;
-}
-.games_post img{
-    width:320px;
-}
-.all_movies_post{
-    padding: 3px!important;
-  
-   
-}
+    }
 
-.all_movies_post h5,h6{
-    font-size: 0.8rem!important;
-}
-.download-button{
-    background-color: #6AC045;
-    color:white;
-    padding:5px;
-    font-size: 0.8rem!important;
+    ._popular_terms ._terms {}
 
-}
-.all_movies_post img{
-    width:120px!important;
-}
-.but{
-    margin: 0 !important;;
-    width: 100%;
+    ._tags-title {
+        display: block;
 
-   
-}
+    }
 
-.form_movies ._s_box{
-    padding: 8px 35px;
-}
+    ._terms {
+        padding: 5px !important;
+    }
 
-.form_games ._s_box{
-    padding: 8px 35px;
-}
-.form_movies {
-    width: 95% !important;;
-}
+    ._navbar {
+        display: none;
+    }
 
-._main{
-    height: fit-content;
-    background-position:center;
-}
-.my_paging{
-   
-    justify-content: start;
-    font-size:0.8rem!important;
- 
-    flex-wrap: wrap!important;
-}
-.main_paginate{
-    max-width: 350px!important;
-    display: flex!important;
-    flex-wrap: wrap;
+    ._navbar-main {
+        height: 80px;
+    }
 
-}
+    ._s_button {
+        width: 100px;
+        padding: 5px;
+    }
+
+    ._s_box {
+        padding: 13px 35px;
+
+    }
+
+    .all_games_post .card-img img {
+        max-width: 320px !important;
+    }
+
+    .all_games_post {
+        max-width: 340px !important;
+        margin: auto;
+        margin-top: 10px !important;
+    }
+
+    .games_post_single {
+        width: 90% !important;
+    }
+
+    .games_post img {
+        width: 320px;
+    }
+
+    .all_movies_post {
+        padding: 3px !important;
+
+
+    }
+
+    .all_movies_post h5,
+    h6 {
+        font-size: 0.8rem !important;
+    }
+
+    .download-button {
+        background-color: #6AC045;
+        color: white;
+        padding: 5px;
+        font-size: 0.8rem !important;
+
+    }
+
+    .all_movies_post img {
+        width: 120px !important;
+    }
+
+    .but {
+        margin: 0 !important;
+        ;
+        width: 100%;
+
+
+    }
+
+    .form_movies ._s_box {
+        padding: 8px 35px;
+    }
+
+    .form_games ._s_box {
+        padding: 8px 35px;
+    }
+
+    .form_movies {
+        width: 95% !important;
+        ;
+    }
+
+    ._main {
+        height: fit-content;
+        background-position: center;
+    }
+
+    .my_paging {
+
+        justify-content: start;
+        font-size: 0.8rem !important;
+
+        flex-wrap: wrap !important;
+    }
+
+    .main_paginate {
+        max-width: 350px !important;
+        display: flex !important;
+        flex-wrap: wrap;
+
+    }
 
 }
 
 
 /** games page **/
 
-.card{
-    background-color: #171717!important;
-    border:1px solid #333333!important;
-    margin:10px;
-   
+.card {
+    background-color: #171717 !important;
+    border: 1px solid #333333 !important;
+    margin: 10px;
+
 }
 
-.download-button{
+.download-button {
     background-color: #6AC045;
-    color:white;
-    padding:10px 15px;
-    transition:0.3s all ease;
-    border:none;
+    color: white;
+    padding: 10px 15px;
+    transition: 0.3s all ease;
+    border: none;
     text-decoration: none;
 }
-.download-button:hover{
+
+.download-button:hover {
     background-color: #3c6d28;
-    color:white;
+    color: white;
 }
-.all_games_post .card-img img{
-    max-width:450px;
+
+.all_games_post .card-img img {
+    max-width: 450px;
     max-height: 220px;
     transition: all 0.4s ease-in;
 }
-.all_games_post .card-img img:hover{
+
+.all_games_post .card-img img:hover {
     transform: scale(1.1);
 }
 
 
-.my_paging{
+.my_paging {
     display: flex;
     justify-content: center;
-   
-   
+
+
 }
 
 
 
 /** Games single post **/
 
-.games_post_single img{
-    max-width: 440px!important;
-    
-}
-.games_post{
-    max-width: 100%!important;
+.games_post_single img {
+    max-width: 440px !important;
+
 }
 
-.page-link{
-    background-color: #333333!important;
-    border:1px solid #171717!important; 
-    color:white!important;
+.games_post {
+    max-width: 100% !important;
 }
 
-#active_page{
-    background-color: #6AC045!important;
+.page-link {
+    background-color: #333333 !important;
+    border: 1px solid #171717 !important;
+    color: white !important;
+}
+
+#active_page {
+    background-color: #6AC045 !important;
 }
 
 
@@ -415,138 +459,146 @@ width: 90%!important;
 
 /** movies section **/
 
-.all_movies_post img{
+.all_movies_post img {
     width: 150px;
-    height:180px;
-}
-.all_movies_img{
-    height:190px;
- 
-} 
-.card-header{
-    height: 60px!important;
+    height: 180px;
 }
 
-.but{
-    margin:25px;
+.all_movies_img {
+    height: 190px;
+
 }
 
-.all_movies_img  img{
-    max-width:450px;
+.card-header {
+    height: 60px !important;
+}
+
+.but {
+    margin: 25px;
+}
+
+.all_movies_img img {
+    max-width: 450px;
     max-height: 220px;
     transition: all 0.4s ease-in;
 }
-.all_movies_img  img:hover{
+
+.all_movies_img img:hover {
     transform: scale(1.1);
 }
 
 /** movie page **/
 .form_movies {
     margin: auto;
-    width:60%;
+    width: 60%;
 }
 
 
 /** dmca page **/
 
-.dmca-policy{
-    
+.dmca-policy {
+
     word-spacing: 0.3rem;
 }
 
-.content{
+.content {
     margin-bottom: 700px;
 }
+
 /*Footer styling*/
 
-footer{
-    
+footer {
+
     border-top: 1px solid #333333;
-    background-color:#171717;
-    display:flex !important;
-    height:80px;
+    background-color: #171717;
+    display: flex !important;
+    height: 80px;
     align-items: center;
     justify-content: center;
     flex-wrap: wrap;
-    padding:10px;
+    padding: 10px;
 
 }
 
-footer small{
-margin: auto;
-color:white;
-font-style: italic;
-}
-
-footer .follow-links{
+footer small {
     margin: auto;
-    color:white;
+    color: white;
+    font-style: italic;
 }
 
-footer .follow-links a{
-    text-decoration: none;
-    color:white;
-    transition:0.3s ease-in all;
+footer .follow-links {
+    margin: auto;
+    color: white;
 }
-footer .follow-links a:hover{
-    color:rgb(17, 104, 185);
+
+footer .follow-links a {
+    text-decoration: none;
+    color: white;
+    transition: 0.3s ease-in all;
+}
+
+footer .follow-links a:hover {
+    color: rgb(17, 104, 185);
 }
 
 
 /** contact form **/
 
-.contact_form{
-    color:white;
-    max-width:700px;
-}
-.contact_form input{
-    background-color:#1D1D1D;
-    border:1px solid #333333;
-    color:white;
+.contact_form {
+    color: white;
+    max-width: 700px;
 }
 
-.contact_form input:focus{
-    background-color:#1D1D1D;
-    border:1px solid #333333!important;
-    box-shadow: none!important;
-    color:white;
-
+.contact_form input {
+    background-color: #1D1D1D;
+    border: 1px solid #333333;
+    color: white;
 }
 
-.contact_form textarea{
-    background-color:#1D1D1D;
-    
-    border:1px solid #333333;
-    color:white;
+.contact_form input:focus {
+    background-color: #1D1D1D;
+    border: 1px solid #333333 !important;
+    box-shadow: none !important;
+    color: white;
 
 }
 
-.contact_form textarea:focus{
-    background-color:#1D1D1D;
-    border:1px solid #333333!important;
-    box-shadow: none!important;
-    color:white;
+.contact_form textarea {
+    background-color: #1D1D1D;
+
+    border: 1px solid #333333;
+    color: white;
 
 }
 
-.contact_form .from-group{
+.contact_form textarea:focus {
+    background-color: #1D1D1D;
+    border: 1px solid #333333 !important;
+    box-shadow: none !important;
+    color: white;
+
+}
+
+.contact_form .from-group {
     margin: 30px 0;
 }
-.contact_form button{
-    padding:10px 25px;
-    color:white;
+
+.contact_form button {
+    padding: 10px 25px;
+    color: white;
     background-color: #6AC045;
-    border:none;
-    transition:0.4s all ease;
+    border: none;
+    transition: 0.4s all ease;
 }
-.contact_form button:hover{
+
+.contact_form button:hover {
     background-color: #38741f;
 }
 
 /** privacy section **/
 
 
-.privacy-section{
+.privacy-section {
 
-    margin:30px 0;
+    margin: 30px 0;
 }

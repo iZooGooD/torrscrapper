@@ -14,13 +14,14 @@
     flex-wrap: wrap;
 }
 
-._main {
+.container__wrapper {
     background-color: #171717 !important;
     background-image: url("/static/img/Hanging-Spider-PNG-File.png");
     background-repeat: no-repeat;
     background-position: center -500px;
     background-size: cover;
     height: 1000px !important;
+    background-position: center;
 }
 
 body {
@@ -32,7 +33,6 @@ body {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
-
 }
 
 .mobile-menu {
@@ -133,7 +133,7 @@ body {
     text-decoration: none !important;
 }
 
-.section_search_box {
+.site__wrapper {
     display: flex;
     height: 700px;
     justify-content: center;
@@ -146,12 +146,12 @@ form {
     width: 100%;
 }
 
-._form-group {
+.form-group {
     display: flex;
     width: 100%;
 }
 
-._s_box {
+.search-box__input {
     border: none;
     border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;
@@ -163,11 +163,10 @@ form {
 
 ._s_box:focus {
     box-shadow: 0 0 5px rgba(81, 203, 238, 1);
-
     border: 1px solid rgba(81, 203, 238, 1);
 }
 
-._s_button {
+.search-box__button {
     border: none;
     padding: 15px 40px;
     background-color: #6AC045;
@@ -176,25 +175,25 @@ form {
     border-bottom-right-radius: 10px;
 }
 
-._s_button:hover {
+.search-box__button:hover {
     background-color: #41742b;
 }
 
-._notice {
+.w-100 {
     width: 100%;
 }
 
-._popular_terms {
+.popular-categories__container {
     width: 100%;
     display: flex;
     align-items: center;
 }
 
-.p_head {
+.popular-categories__heading {
     color: #6AC045;
 }
 
-._popular_terms ._terms {
+.popular-categories__container .popular-categories__item {
     text-decoration: none !important;
     background-color: #6AC045;
     padding: 10px;
@@ -204,7 +203,7 @@ form {
     transition: all 0.3s ease;
 }
 
-._popular_terms ._terms:hover {
+.popular-categories__container .popular-categories__item:hover {
     transform: translateY(10px);
     background-color: #40742b;
 }
@@ -334,11 +333,6 @@ form {
 
     .form_movies {
         width: 95% !important;
-    }
-
-    ._main {
-        height: fit-content;
-        background-position: center;
     }
 
     .my_paging {

@@ -28,11 +28,12 @@
         <h4 class="dropdown-menu-item"><a href="{% url 'dmca' %}">DMCA Policy</a></h4>
 
     </div>
-    <nav class="_navbar-main">
+    <nav class="navbar-main">
         <i id="menu-bar" class="fas fa-bars"></i>
-        <a href="{% url 'index' %}" class="_navbar-brand">TorrScrapper</a><span class="headline">All your torrents at
+        <a href="{% url 'index' %}" class="navbar-main__brand">TorrScrapper</a><span class="headline">All your torrents
+            at
             one place</span>
-        <ul class="_navbar" id="nav_nav">
+        <ul class="navbar-main-list__container" id="nav_nav">
             <li><a href="{% url 'index' %}">Home</a></li>
             <li><a href="#">About</a></li>
             <li><a href="{% url 'dmca' %}">DMCA Policy</a></li>

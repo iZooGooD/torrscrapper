@@ -217,11 +217,7 @@ form {
     color: white;
 }
 
-._sortbox {
-    text-align: end;
-}
-
-.download-magnet {
+.magnet-link__button {
     background-color: #6AC045;
     padding: 5px;
     color: white;
@@ -230,7 +226,7 @@ form {
     transition: 0.4s;
 }
 
-.download-magnet:hover {
+.magnet-link__button:hover {
     color: white;
     border-radius: 4px;
     background-color: #41742b;
@@ -460,8 +456,6 @@ footer {
     align-items: center;
     justify-content: center;
     flex-wrap: wrap;
-    position: fixed;
-    bottom: 0px;
 }
 
 footer small {

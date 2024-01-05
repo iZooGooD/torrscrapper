@@ -5,41 +5,34 @@
     font-family: 'Poppins', sans-serif;
 }
 
-._navbar-main {
+.navbar-main {
     background-color: #1D1D1D;
     border-bottom: 1px solid #333333;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
-
-
 }
 
-
-._main {
+.container__wrapper {
     background-color: #171717 !important;
     background-image: url("/static/img/Hanging-Spider-PNG-File.png");
-
     background-repeat: no-repeat;
-
     background-position: center -500px;
     background-size: cover;
     height: 1000px !important;
-
+    background-position: center;
 }
 
 body {
     background-color: #171717 !important;
 }
 
-._navbar {
+.navbar-main-list__container {
     margin: auto;
-
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
-
 }
 
 .mobile-menu {
@@ -61,15 +54,13 @@ body {
     cursor: pointer;
     position: absolute;
     left: 2%;
-
-
 }
 
-._navbar-main ul a {
+.navbar-main ul a {
     position: relative;
 }
 
-._navbar-main ul a:before {
+.navbar-main ul a:before {
     content: "";
     position: absolute;
     width: 100%;
@@ -82,7 +73,7 @@ body {
     transition: all 0.5s ease-in-out;
 }
 
-._navbar-main ul a:hover:before {
+.navbar-main ul a:hover:before {
     visibility: visible;
     transform: scaleX(1);
 }
@@ -106,49 +97,43 @@ body {
     right: 3%;
     top: 1%;
     color: white;
-
-
 }
 
-._navbar-main ._navbar-brand {
+.navbar-main .navbar-main__brand {
     font-family: 'Creepster', cursive;
     font-size: 1.8rem;
-
 }
 
-._navbar-main ._navbar-brand:hover {
+.navbar-main .navbar-main__brand:hover {
     color: white;
 }
 
-._navbar-main .headline {
-
+.navbar-main .headline {
     color: white;
     margin: 10px;
     font-size: 14px;
 }
 
-._navbar li {
+.navbar-main-list__container li {
     display: inline;
     padding: 20px;
 
 }
 
-._navbar li a {
+.navbar-main-list__container li a {
     color: #fff;
     text-decoration: none !important;
 }
 
-._navbar-brand {
+.navbar-main__brand {
     margin-left: auto;
     margin-left: 1.5rem;
     font-size: 1.3rem;
     color: #fff;
     text-decoration: none !important;
-
 }
 
-.section_search_box {
-
+.site__wrapper {
     display: flex;
     height: 700px;
     justify-content: center;
@@ -161,12 +146,12 @@ form {
     width: 100%;
 }
 
-._form-group {
+.form-group {
     display: flex;
     width: 100%;
 }
 
-._s_box {
+.search-box__input {
     border: none;
     border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;
@@ -178,12 +163,10 @@ form {
 
 ._s_box:focus {
     box-shadow: 0 0 5px rgba(81, 203, 238, 1);
-
     border: 1px solid rgba(81, 203, 238, 1);
 }
 
-._s_button {
-
+.search-box__button {
     border: none;
     padding: 15px 40px;
     background-color: #6AC045;
@@ -192,26 +175,25 @@ form {
     border-bottom-right-radius: 10px;
 }
 
-._s_button:hover {
+.search-box__button:hover {
     background-color: #41742b;
 }
 
-._notice {
+.w-100 {
     width: 100%;
-
 }
 
-._popular_terms {
+.popular-categories__container {
     width: 100%;
     display: flex;
     align-items: center;
 }
 
-.p_head {
+.popular-categories__heading {
     color: #6AC045;
 }
 
-._popular_terms ._terms {
+.popular-categories__container .popular-categories__item {
     text-decoration: none !important;
     background-color: #6AC045;
     padding: 10px;
@@ -219,10 +201,9 @@ form {
     margin: 6px;
     border-radius: 20px;
     transition: all 0.3s ease;
-
 }
 
-._popular_terms ._terms:hover {
+.popular-categories__container .popular-categories__item:hover {
     transform: translateY(10px);
     background-color: #40742b;
 }
@@ -236,11 +217,7 @@ form {
     color: white;
 }
 
-._sortbox {
-    text-align: end;
-}
-
-.download-magnet {
+.magnet-link__button {
     background-color: #6AC045;
     padding: 5px;
     color: white;
@@ -249,7 +226,7 @@ form {
     transition: 0.4s;
 }
 
-.download-magnet:hover {
+.magnet-link__button:hover {
     color: white;
     border-radius: 4px;
     background-color: #41742b;
@@ -271,27 +248,22 @@ form {
     }
 
     ._popular_terms {
-
         flex-wrap: wrap;
-
     }
-
-    ._popular_terms ._terms {}
 
     ._tags-title {
         display: block;
-
     }
 
     ._terms {
         padding: 5px !important;
     }
 
-    ._navbar {
+    .navbar-main-list__container {
         display: none;
     }
 
-    ._navbar-main {
+    .navbar-main {
         height: 80px;
     }
 
@@ -302,7 +274,6 @@ form {
 
     ._s_box {
         padding: 13px 35px;
-
     }
 
     .all_games_post .card-img img {
@@ -325,8 +296,6 @@ form {
 
     .all_movies_post {
         padding: 3px !important;
-
-
     }
 
     .all_movies_post h5,
@@ -339,7 +308,6 @@ form {
         color: white;
         padding: 5px;
         font-size: 0.8rem !important;
-
     }
 
     .all_movies_post img {
@@ -348,10 +316,7 @@ form {
 
     .but {
         margin: 0 !important;
-        ;
         width: 100%;
-
-
     }
 
     .form_movies ._s_box {
@@ -364,19 +329,11 @@ form {
 
     .form_movies {
         width: 95% !important;
-        ;
-    }
-
-    ._main {
-        height: fit-content;
-        background-position: center;
     }
 
     .my_paging {
-
         justify-content: start;
         font-size: 0.8rem !important;
-
         flex-wrap: wrap !important;
     }
 
@@ -384,9 +341,7 @@ form {
         max-width: 350px !important;
         display: flex !important;
         flex-wrap: wrap;
-
     }
-
 }
 
 
@@ -396,7 +351,6 @@ form {
     background-color: #171717 !important;
     border: 1px solid #333333 !important;
     margin: 10px;
-
 }
 
 .download-button {
@@ -427,8 +381,6 @@ form {
 .my_paging {
     display: flex;
     justify-content: center;
-
-
 }
 
 
@@ -437,7 +389,6 @@ form {
 
 .games_post_single img {
     max-width: 440px !important;
-
 }
 
 .games_post {
@@ -455,10 +406,7 @@ form {
 }
 
 
-
-
 /** movies section **/
-
 .all_movies_post img {
     width: 150px;
     height: 180px;
@@ -466,15 +414,10 @@ form {
 
 .all_movies_img {
     height: 190px;
-
 }
 
 .card-header {
     height: 60px !important;
-}
-
-.but {
-    margin: 25px;
 }
 
 .all_movies_img img {
@@ -497,27 +440,18 @@ form {
 /** dmca page **/
 
 .dmca-policy {
-
     word-spacing: 0.3rem;
 }
 
-.content {
-    margin-bottom: 700px;
-}
-
 /*Footer styling*/
-
 footer {
-
     border-top: 1px solid #333333;
     background-color: #171717;
-    display: flex !important;
+    display: flex;
     height: 80px;
     align-items: center;
     justify-content: center;
     flex-wrap: wrap;
-    padding: 10px;
-
 }
 
 footer small {
@@ -560,15 +494,12 @@ footer .follow-links a:hover {
     border: 1px solid #333333 !important;
     box-shadow: none !important;
     color: white;
-
 }
 
 .contact_form textarea {
     background-color: #1D1D1D;
-
     border: 1px solid #333333;
     color: white;
-
 }
 
 .contact_form textarea:focus {
@@ -576,7 +507,6 @@ footer .follow-links a:hover {
     border: 1px solid #333333 !important;
     box-shadow: none !important;
     color: white;
-
 }
 
 .contact_form .from-group {
@@ -596,9 +526,6 @@ footer .follow-links a:hover {
 }
 
 /** privacy section **/
-
-
 .privacy-section {
-
     margin: 30px 0;
 }

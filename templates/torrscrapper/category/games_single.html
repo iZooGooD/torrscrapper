@@ -1,29 +1,31 @@
 {% extends 'base.html' %}
 {% block game_page %}
 <div class="container">
-  <nav aria-label="breadcrumb">
-    <ol class="breadcrumb my-2">
-      <li class="breadcrumb-item"><a href="{% url 'index' %}">TorrScrapper</a></li>
-      <li class="breadcrumb-item"><a href="{% url 'games' %}">Games</a></li>
-      <li class="breadcrumb-item active" aria-current="page">{{ game.title }}</li>
-
-    </ol>
-  </nav>
-  <div class="row">
-    <div class="card col-lg-12 col-md-12 col-sm-10 games_post_single">
-      <h4 class="card-header text-white text-center">{{ game.title }}</h4>
-      <div class="games_post text-center"><img src="{{ game.image_url }}"> </div>
-      <div class="card-body">
-        <h6 class="text-white">Release date: {{ game.release_date }}</h6>
-        <h6 class="text-white">Game size: {{ game.size }}</h6>
-        <h6 class="text-white">Developer: {{ game.developer }}</h6>
-        <br>
-        <span class="about text-primary">About game:</span>
-        <p class="text-white">{{ game.description }}</p>
-        <div class="but text-center"><a href="{{ game.magnet }}" class="download-button">Download</button></a>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb my-2">
+            <li class="breadcrumb-item"><a href="{% url 'index' %}">TorrScrapper</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'games' %}">Games</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ game.title }}</li>
+        </ol>
+    </nav>
+    <div class="row">
+        <div class="card col-lg-12 col-md-12 col-sm-10 games_post_single">
+            <h4 class="card-header text-white text-center">{{ game.title }}</h4>
+            <div class="games_post text-center">
+                <img src="{{ game.image_url }}" alt="{{ game.title }}">
+            </div>
+            <div class="card-body">
+                <h6 class="text-white">Release date: {{ game.release_date }}</h6>
+                <h6 class="text-white">Game size: {{ game.size }}</h6>
+                <h6 class="text-white">Developer: {{ game.developer }}</h6>
+                <br>
+                <span class="about text-primary">About game:</span>
+                <p class="text-white">{{ game.description }}</p>
+                <div class="but text-center">
+                    <a href="{{ game.magnet }}" class="download-button">Download</a>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
 </div>
 {% endblock %}

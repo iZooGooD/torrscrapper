@@ -1,37 +1,38 @@
 {% extends 'base.html' %}
 {% block movie_page %}
-<div class="container ">
-  <nav aria-label="breadcrumb">
-    <ol class="breadcrumb my-2">
-      <li class="breadcrumb-item"><a href="{% url 'index' %}">TorrScrapper</a></li>
-      <li class="breadcrumb-item"><a href="{% url 'movies' %}">Movies</a></li>
-      <li class="breadcrumb-item active" aria-current="page">{{ movie.title }}
-      </li>
-    </ol>
-  </nav>
-  <div class="row">
-    <div class="card col-lg-12 col-md-12 col-sm-10 games_post_single">
-      <h4 class="card-header text-white text-center">{{ movie.title }}</h4>
-      <div class="movie_post text-center"><img src="{{ movie.image_url }}"> </div>
-      <div class="card-body">
-        <h6 class="text-white ">Release Year: {{ movie.release_date }}</h6>
-        <br>
-        <span class="about text-primary">About movie:</span>
-        <p class="text-white"> {{ movie.synopsis }}</p>
-        {% if movie.quality_720 != "NULL" %}
-        <div class="but text-center"><a href="{{ movie.quality_720p }}" class="download-button">Download
-            720p</button></a><br>
-          <h6 class="text-primary"><br> File size: {{ movie.quality_720p_size }}</h6><br>
+<div class="container">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb my-2">
+            <li class="breadcrumb-item"><a href="{% url 'index' %}">TorrScrapper</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'movies' %}">Movies</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ movie.title }}</li>
+        </ol>
+    </nav>
+    <div class="row">
+        <div class="card col-lg-12 col-md-12 col-sm-10 games_post_single">
+            <h4 class="card-header text-white text-center">{{ movie.title }}</h4>
+            <div class="movie_post text-center">
+                <img src="{{ movie.image_url }}" alt="{{ movie.title }}">
+            </div>
+            <div class="card-body">
+                <h6 class="text-white">Release Year: {{ movie.release_date }}</h6>
+                <br>
+                <span class="about text-primary">About movie:</span>
+                <p class="text-white">{{ movie.synopsis }}</p>
+                {% if movie.quality_720 != "NULL" %}
+                    <div class="but text-center">
+                        <a href="{{ movie.quality_720p }}" class="download-button">Download 720p</a><br>
+                        <h6 class="text-primary"><br> File size: {{ movie.quality_720p_size }}</h6><br>
+                    </div>
+                {% endif %}
+                {% if movie.quality_1080 != "NULL" %}
+                    <div class="but text-center">
+                        <a href="{{ movie.quality_1080p }}" class="download-button">Download 1080p</a><br>
+                        <h6 class="text-primary"><br> File size: {{ movie.quality_1080p_size }}</h6>
+                    </div>
+                {% endif %}
+            </div>
         </div>
-        {% endif %}
-        {% if movie.quality_1080 != "NULL" %}
-        <div class="but text-center"><a href="{{ movie.quality_1080p }}" class="download-button">Download
-            1080p</button></a><br>
-          <h6 class="text-primary"><br> File size: {{ movie.quality_1080p_size }}</h6>
-        </div>
-        {% endif %}
-      </div>
     </div>
-  </div>
 </div>
 {% endblock %}

@@ -161,7 +161,7 @@ form {
     outline: none;
 }
 
-._s_box:focus {
+.search-box__input:focus {
     box-shadow: 0 0 5px rgba(81, 203, 238, 1);
     border: 1px solid rgba(81, 203, 238, 1);
 }
@@ -247,18 +247,6 @@ form {
         display: block;
     }
 
-    ._popular_terms {
-        flex-wrap: wrap;
-    }
-
-    ._tags-title {
-        display: block;
-    }
-
-    ._terms {
-        padding: 5px !important;
-    }
-
     .navbar-main-list__container {
         display: none;
     }
@@ -267,20 +255,11 @@ form {
         height: 80px;
     }
 
-    ._s_button {
-        width: 100px;
-        padding: 5px;
-    }
-
-    ._s_box {
-        padding: 13px 35px;
-    }
-
-    .all_games_post .card-img img {
+    .games-view__container .card-img img {
         max-width: 320px !important;
     }
 
-    .all_games_post {
+    .games-view__container {
         max-width: 340px !important;
         margin: auto;
         margin-top: 10px !important;
@@ -314,24 +293,11 @@ form {
         width: 120px !important;
     }
 
-    .but {
-        margin: 0 !important;
-        width: 100%;
-    }
-
-    .form_movies ._s_box {
-        padding: 8px 35px;
-    }
-
-    .form_games ._s_box {
-        padding: 8px 35px;
-    }
-
     .form_movies {
         width: 95% !important;
     }
 
-    .my_paging {
+    .pagination__container {
         justify-content: start;
         font-size: 0.8rem !important;
         flex-wrap: wrap !important;
@@ -346,7 +312,6 @@ form {
 
 
 /** games page **/
-
 .card {
     background-color: #171717 !important;
     border: 1px solid #333333 !important;
@@ -367,18 +332,18 @@ form {
     color: white;
 }
 
-.all_games_post .card-img img {
+.games-view__container .card-img img {
     max-width: 450px;
     max-height: 220px;
     transition: all 0.4s ease-in;
 }
 
-.all_games_post .card-img img:hover {
+.games-view__container .card-img img:hover {
     transform: scale(1.1);
 }
 
 
-.my_paging {
+.pagination__container {
     display: flex;
     justify-content: center;
 }
@@ -386,7 +351,6 @@ form {
 
 
 /** Games single post **/
-
 .games_post_single img {
     max-width: 440px !important;
 }

@@ -27,7 +27,7 @@
 
     <div class="row mt-2">
         {% for game in all_games %}
-            <div class="card col-sm-8 col-md-6 col-lg-5 all_games_post">
+            <div class="card col-sm-8 col-md-6 col-lg-5 games-view__container">
                 <h5 class="card-header text-white text-center">{{ game.title }}</h5>
                 <div class="card-img text-center">
                     <img src="{{ game.image_url }}" alt="{{ game.title }}">
@@ -43,7 +43,7 @@
         {% endfor %}
     </div>
 
-    <nav aria-label="Page navigation example" class="my_paging">
+    <nav class="pagination__container">
         {% if search_flag == True %}
             {% if all_games.has_other_pages %}
                 <ul class="pagination main_paginate">

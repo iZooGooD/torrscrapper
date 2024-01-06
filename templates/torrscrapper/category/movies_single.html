@@ -20,13 +20,13 @@
                 <span class="about text-primary">About movie:</span>
                 <p class="text-white">{{ movie.synopsis }}</p>
                 {% if movie.quality_720 != "NULL" %}
-                    <div class="but text-center">
+                    <div class="d-flex justify-content-center text-center">
                         <a href="{{ movie.quality_720p }}" class="download-button">Download 720p</a><br>
                         <h6 class="text-primary"><br> File size: {{ movie.quality_720p_size }}</h6><br>
                     </div>
                 {% endif %}
                 {% if movie.quality_1080 != "NULL" %}
-                    <div class="but text-center">
+                    <div class="d-flex justify-content-center text-center">
                         <a href="{{ movie.quality_1080p }}" class="download-button">Download 1080p</a><br>
                         <h6 class="text-primary"><br> File size: {{ movie.quality_1080p_size }}</h6>
                     </div>

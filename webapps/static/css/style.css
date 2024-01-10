@@ -19,7 +19,7 @@
     background-image: url("/static/img/Hanging-Spider-PNG-File.png");
     background-repeat: no-repeat;
     background-position: center -500px;
-    background-size: cover;
+    background-size: contain;
     height: 1000px !important;
     background-position: center;
 }

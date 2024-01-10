@@ -172,7 +172,7 @@ def create_magnet_pirate_bay(info_hash, name):
 
 def get_pirate_bay_torrents(keywords, index):
     torrents = []
-    search_url = SiteURLs.PIRATE_BAY_BASE_URL + 'q=' + keywords 
+    search_url = SiteURLs.PIRATE_BAY_BASE_URL + 'q=' + keywords
     response = scraper.get(search_url)
 
     if response.status_code == 200:

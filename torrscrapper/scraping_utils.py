@@ -9,6 +9,7 @@ import aiohttp
 import humanize
 import urllib.parse
 import sys
+from urllib.parse import urlparse, parse_qs
 
 # Create a logger object
 logger = logging.getLogger()
@@ -105,7 +106,12 @@ def get_1337x_torrents(keywords, index):
     torrents = []
     search_url = SiteURLs.X1337_BASE_URL + '/search/' + keywords + '/1/'
     response = scraper.get(search_url)
-    if response.status_code == 200:
+    parsed_url = urlparse(response.url)
+    query_params = parse_qs(parsed_url.query)
+    url_status_code = int(query_params.get('status', [None])[0])
+    if url_status_code:
+        url_status_code = int(url_status_code)
+    if response.status_code == 200 and url_status_code is not None and url_status_code != 403:
         logging.info(f"Site #{index} - Initial request to site {search_url} was successful")
         soup = BeautifulSoup(response.content, 'html.parser')
         rows = soup.find_all('tr')
@@ -133,7 +139,10 @@ def get_1337x_torrents(keywords, index):
         logging.info(f"Site #{index} - Collected {len(torrents)} torrents")
         return torrents
     else:
-        logging.error(f"Failed to scrape 1337x. Status code: {response.status_code}")
+        if url_status_code:
+            logging.error(f"Failed to scrape 1337x. Status code: {url_status_code}")
+        else:
+          logging.error(f"Failed to scrape 1337x. Status code: {response.status_code}")
         return []
 
 def create_magnet_pirate_bay(info_hash, name):

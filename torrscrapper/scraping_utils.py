@@ -35,7 +35,6 @@ scraper = cloudscraper.create_scraper(browser='chrome')
 
 def scrape_data(keywords, selected_sites):
     site_scrapers = {
-        '1337x': get_1337x_torrents,
         'pirate_bay': get_pirate_bay_torrents
     }
     combined_results = []

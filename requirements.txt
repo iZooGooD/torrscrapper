@@ -1,6 +1,5 @@
 aiohttp==3.9.1
 asyncio==3.4.3
-beautifulsoup4==4.11.1
 beautifulsoup4==4.9.3
 cloudscraper==1.2.56
 Django==4.2.5

@@ -35,7 +35,8 @@ scraper = cloudscraper.create_scraper(browser='chrome')
 
 def scrape_data(keywords, selected_sites):
     site_scrapers = {
-        'pirate_bay': get_pirate_bay_torrents
+        'pirate_bay': get_pirate_bay_torrents,
+        '1337x': get_1337x_torrents,
     }
     combined_results = []
 
@@ -104,44 +105,48 @@ async def get_1337x_torrents_async(keywords, torrents):
 def get_1337x_torrents(keywords, index):
     torrents = []
     search_url = SiteURLs.X1337_BASE_URL + '/search/' + keywords + '/1/'
-    response = scraper.get(search_url)
-    parsed_url = urlparse(response.url)
-    query_params = parse_qs(parsed_url.query)
-    url_status_code = int(query_params.get('status', [None])[0])
-    if url_status_code:
-        url_status_code = int(url_status_code)
-    if response.status_code == 200 and url_status_code is not None and url_status_code != 403:
-        logging.info(f"Site #{index} - Initial request to site {search_url} was successful")
-        soup = BeautifulSoup(response.content, 'html.parser')
-        rows = soup.find_all('tr')
-        for row in rows:
-            cols = row.find_all('td')
-            if cols:
-                name_col = cols[0].find_all('a', href=True)
-                if len(name_col) >= 2 and name_col[1]['href'].startswith('/torrent/'):
-                    name = name_col[1].text.strip()
-                    href = SiteURLs.X1337_BASE_URL + name_col[1]['href']
-                    seeds = cols[1].text
-                    leeches = cols[2].text
-                    size_element = cols[4].find(text=True, recursive=False).strip()
-                    size = size_element if size_element else None
-                    torrent = {
-                        'title': name,
-                        'magnet': href,
-                        'seeds': seeds,
-                        'peers': leeches,
-                        'size': size
-                    }
-                    torrents.append(torrent)
-
-        asyncio.run(get_1337x_torrents_async(keywords, torrents))  # Call the asynchronous function
-        logging.info(f"Site #{index} - Collected {len(torrents)} torrents")
-        return torrents
-    else:
+    try:
+        response = scraper.get(search_url, timeout=10)  # Add timeout of 10 seconds
+        parsed_url = urlparse(response.url)
+        query_params = parse_qs(parsed_url.query)
+        url_status_code = int(query_params.get('status', [None])[0])
         if url_status_code:
-            logging.error(f"Failed to scrape 1337x. Status code: {url_status_code}")
+            url_status_code = int(url_status_code)
+        if response.status_code == 200 and url_status_code is not None and url_status_code != 403:
+            logging.info(f"Site #{index} - Initial request to site {search_url} was successful")
+            soup = BeautifulSoup(response.content, 'html.parser')
+            rows = soup.find_all('tr')
+            for row in rows:
+                cols = row.find_all('td')
+                if cols:
+                    name_col = cols[0].find_all('a', href=True)
+                    if len(name_col) >= 2 and name_col[1]['href'].startswith('/torrent/'):
+                        name = name_col[1].text.strip()
+                        href = SiteURLs.X1337_BASE_URL + name_col[1]['href']
+                        seeds = cols[1].text
+                        leeches = cols[2].text
+                        size_element = cols[4].find(text=True, recursive=False).strip()
+                        size = size_element if size_element else None
+                        torrent = {
+                            'title': name,
+                            'magnet': href,
+                            'seeds': seeds,
+                            'peers': leeches,
+                            'size': size
+                        }
+                        torrents.append(torrent)
+
+            asyncio.run(get_1337x_torrents_async(keywords, torrents))  # Call the asynchronous function
+            logging.info(f"Site #{index} - Collected {len(torrents)} torrents")
+            return torrents
         else:
-          logging.error(f"Failed to scrape 1337x. Status code: {response.status_code}")
+            if url_status_code:
+                logging.error(f"Failed to scrape 1337x. Status code: {url_status_code}")
+            else:
+                logging.error(f"Failed to scrape 1337x. Status code: {response.status_code}")
+            return []
+    except cloudscraper.requests.exceptions.ConnectionError as e:
+        logging.error(f"Connection error occurred: {str(e)}")
         return []
 
 def create_magnet_pirate_bay(info_hash, name):

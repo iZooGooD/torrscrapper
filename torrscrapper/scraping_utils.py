@@ -16,7 +16,9 @@ logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
 # Formatter for the log messages
-formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
+formatter = logging.Formatter(
+    '%(asctime)s - %(levelname)s - %(message)s',
+    datefmt='%Y-%m-%d %H:%M:%S')
 
 # File handler for outputting log messages to a file
 file_handler = logging.FileHandler('scraping_logs.log', encoding='utf-8')
@@ -32,6 +34,7 @@ logger.addHandler(stream_handler)
 
 ## global variables
 scraper = cloudscraper.create_scraper(browser='chrome')
+
 
 def scrape_data(keywords, selected_sites):
     site_scrapers = {
@@ -53,34 +56,41 @@ def scrape_data(keywords, selected_sites):
         if site_key in site_scrapers:
             scraper_function = site_scrapers[site_key]
             start_time = time.time()
-        logging.info(f"🌐 Site #{index} - Starting scraping for site: {site_key}")
+        logging.info(
+            f"🌐 Site #{index} - Starting scraping for site: {site_key}")
 
         # Append results from each site to the combined_results list
         combined_results.extend(scraper_function(keywords, index))
 
         end_time = time.time()
         time_taken = end_time - start_time
-        logging.info(f"Site #{index} - Completed scraping. Time taken: {time_taken:.2f} seconds")
+        logging.info(
+            f"Site #{index} - Completed scraping. Time taken: {time_taken:.2f} seconds")
         logging.info(f"Site #{index} - --------------------------------")
 
     overall_end_time = time.time()
     overall_time_taken = overall_end_time - overall_start_time
-    logging.info(f"🎉 Ending the scraping session. Total time taken: {overall_time_taken:.2f} seconds")
+    logging.info(
+        f"🎉 Ending the scraping session. Total time taken: {overall_time_taken:.2f} seconds")
     logging.info(f"Overall collected {len(combined_results)} torrents")
     logging.info("---------------------------------------------------")
 
     return sort_torrents_by_seeds(combined_results)
 
 # Function to sort torrents by the number of seeds
+
+
 def sort_torrents_by_seeds(torrents):
     return sorted(torrents, key=lambda x: int(x['seeds']), reverse=True)
+
 
 async def fetch_magnet(session, magnet_url, torrent):
     async with session.get(magnet_url) as response:
         if response.status == 200:
             magnet_content = await response.read()
             magnet_soup = BeautifulSoup(magnet_content, 'html.parser')
-            magnet_link = magnet_soup.find('a', href=lambda href: href and 'magnet:?' in href)
+            magnet_link = magnet_soup.find(
+                'a', href=lambda href: href and 'magnet:?' in href)
             if magnet_link:
                 torrent['magnet'] = magnet_link.get('href')
             else:
@@ -88,13 +98,15 @@ async def fetch_magnet(session, magnet_url, torrent):
         else:
             print(f"Error fetching magnet link for {torrent['title']}")
 
+
 async def get_1337x_torrents_async(keywords, torrents):
     async with aiohttp.ClientSession() as session:
         tasks = []
         for torrent in torrents:
             magnet_url = torrent['magnet']
             if magnet_url:
-                task = asyncio.create_task(fetch_magnet(session, magnet_url, torrent))
+                task = asyncio.create_task(
+                    fetch_magnet(session, magnet_url, torrent))
                 tasks.append(task)
 
         # Limiting the number of parallel requests to 5 for now
@@ -102,30 +114,35 @@ async def get_1337x_torrents_async(keywords, torrents):
         for i in range(0, len(tasks), chunk_size):
             await asyncio.gather(*tasks[i:i + chunk_size])
 
+
 def get_1337x_torrents(keywords, index):
     torrents = []
     search_url = SiteURLs.X1337_BASE_URL + '/search/' + keywords + '/1/'
     try:
-        response = scraper.get(search_url, timeout=10)  # Add timeout of 10 seconds
+        # Add timeout of 10 seconds
+        response = scraper.get(search_url, timeout=10)
         parsed_url = urlparse(response.url)
         query_params = parse_qs(parsed_url.query)
         url_status_code = int(query_params.get('status', [None])[0])
         if url_status_code:
             url_status_code = int(url_status_code)
         if response.status_code == 200 and url_status_code is not None and url_status_code != 403:
-            logging.info(f"Site #{index} - Initial request to site {search_url} was successful")
+            logging.info(
+                f"Site #{index} - Initial request to site {search_url} was successful")
             soup = BeautifulSoup(response.content, 'html.parser')
             rows = soup.find_all('tr')
             for row in rows:
                 cols = row.find_all('td')
                 if cols:
                     name_col = cols[0].find_all('a', href=True)
-                    if len(name_col) >= 2 and name_col[1]['href'].startswith('/torrent/'):
+                    if len(name_col) >= 2 and name_col[1]['href'].startswith(
+                            '/torrent/'):
                         name = name_col[1].text.strip()
                         href = SiteURLs.X1337_BASE_URL + name_col[1]['href']
                         seeds = cols[1].text
                         leeches = cols[2].text
-                        size_element = cols[4].find(text=True, recursive=False).strip()
+                        size_element = cols[4].find(
+                            text=True, recursive=False).strip()
                         size = size_element if size_element else None
                         torrent = {
                             'title': name,
@@ -136,18 +153,22 @@ def get_1337x_torrents(keywords, index):
                         }
                         torrents.append(torrent)
 
-            asyncio.run(get_1337x_torrents_async(keywords, torrents))  # Call the asynchronous function
+            # Call the asynchronous function
+            asyncio.run(get_1337x_torrents_async(keywords, torrents))
             logging.info(f"Site #{index} - Collected {len(torrents)} torrents")
             return torrents
         else:
             if url_status_code:
-                logging.error(f"Failed to scrape 1337x. Status code: {url_status_code}")
+                logging.error(
+                    f"Failed to scrape 1337x. Status code: {url_status_code}")
             else:
-                logging.error(f"Failed to scrape 1337x. Status code: {response.status_code}")
+                logging.error(
+                    f"Failed to scrape 1337x. Status code: {response.status_code}")
             return []
     except cloudscraper.requests.exceptions.ConnectionError as e:
         logging.error(f"Connection error occurred: {str(e)}")
         return []
+
 
 def create_magnet_pirate_bay(info_hash, name):
     """
@@ -178,10 +199,12 @@ def create_magnet_pirate_bay(info_hash, name):
         'udp://open.stealth.si:80/announce'
     ]
 
-    tracker_str = ''.join(['&tr=' + urllib.parse.quote(tracker) for tracker in trackers])
+    tracker_str = ''.join(['&tr=' + urllib.parse.quote(tracker)
+                          for tracker in trackers])
     magnet_link = f'magnet:?xt=urn:btih:{info_hash}&dn={urllib.parse.quote(name)}{tracker_str}'
 
     return magnet_link
+
 
 def get_pirate_bay_torrents(keywords, index):
     torrents = []
@@ -189,14 +212,16 @@ def get_pirate_bay_torrents(keywords, index):
     response = scraper.get(search_url)
 
     if response.status_code == 200:
-        logging.info(f"Site #{index} - Initial request to site {search_url} was successful")
+        logging.info(
+            f"Site #{index} - Initial request to site {search_url} was successful")
         json_data = response.json()
         for item in json_data:
             name = item.get("name")
             info_hash = item.get("info_hash")
             seeders = item.get("seeders")
             leechers = item.get("leechers")
-            size = humanize.naturalsize(int(item.get("size")), binary=True)  # Converts bytes to human-readable format
+            # Converts bytes to human-readable format
+            size = humanize.naturalsize(int(item.get("size")), binary=True)
             torrent = {
                 'title': name,
                 'seeds': seeders,
@@ -207,6 +232,7 @@ def get_pirate_bay_torrents(keywords, index):
             torrents.append(torrent)
         logging.info(f"Site #{index} - Collected {len(torrents)} torrents")
     else:
-        logging.error(f"Site #{index} - Failed to scrape Pirate Bay. Status code: {response.status_code}")
+        logging.error(
+            f"Site #{index} - Failed to scrape Pirate Bay. Status code: {response.status_code}")
 
     return torrents

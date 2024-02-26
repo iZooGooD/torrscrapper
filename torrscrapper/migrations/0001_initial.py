@@ -14,15 +14,18 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Movies',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
                 ('title', models.TextField()),
                 ('image_url', models.TextField()),
                 ('release_date', models.CharField(max_length=20)),
                 ('synopsis', models.TextField()),
                 ('quality_720p', models.TextField(default='NULL')),
-                ('quality_720p_size', models.CharField(default='NULL', max_length=20)),
+                ('quality_720p_size', models.CharField(
+                    default='NULL', max_length=20)),
                 ('quality_1080p', models.TextField(default='NULL')),
-                ('quality_1080p_size', models.CharField(default='NULL', max_length=20)),
+                ('quality_1080p_size', models.CharField(
+                    default='NULL', max_length=20)),
             ],
         ),
     ]

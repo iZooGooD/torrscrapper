@@ -11,15 +11,11 @@ def index(request):
 
 
 # Helper Function for Validating Input Length
-
-
 def validate_input_length(value, min_length, max_length):
     return min_length <= len(value) <= max_length
 
 
 # Search Torrents View
-
-
 def searchTorrents(request):
     context = {}
     keywords = request.GET["keywords"].lower()
@@ -31,30 +27,22 @@ def searchTorrents(request):
 
 
 # DMCA View
-
-
 def dmca(request):
     return render(request, "torrscrapper/DMCA.html")
 
 
 # Privacy Policy View
-
-
 def privacy_policy(request):
     return render(request, "torrscrapper/privacy.html")
 
 
 # Contact Us View
-
-
 def contact_us(request):
     context = {"submission": False, "errors": []}
     return render(request, "torrscrapper/contact.html", context)
 
 
 # Contact Form Submission View
-
-
 def contact_form_submit(request):
     context = {"success": False, "errors": []}
     name = request.POST.get("name", "")
@@ -79,8 +67,6 @@ def contact_form_submit(request):
 
 
 # Movies View
-
-
 def movies(request):
     context = {"search_flag": False}
     keywords = request.GET.get("keywords", "")
@@ -111,8 +97,6 @@ def movies(request):
 
 
 # Single Movie View
-
-
 def movies_single(request, movie_id):
     movie = get_object_or_404(Movies, pk=movie_id)
     context = {"movie": movie}
@@ -120,8 +104,6 @@ def movies_single(request, movie_id):
 
 
 # Games View
-
-
 def games(request):
     context = {"search_flag": False}
     keywords = request.GET.get("keywords", "")
@@ -150,8 +132,6 @@ def games(request):
 
 
 # Single Game View
-
-
 def games_single(request, game_id):
     game = get_object_or_404(Games, pk=game_id)
     context = {"game": game}

@@ -1,8 +1,4 @@
 from django.db import models
-
-# Create your models here.
-
-
 class Movies(models.Model):
     title = models.TextField()
     image_url = models.TextField()
@@ -13,7 +9,6 @@ class Movies(models.Model):
     quality_1080p = models.TextField(default="NULL")
     quality_1080p_size = models.CharField(max_length=20, default="NULL")
 
-
 class Games(models.Model):
     title = models.TextField()
     image_url = models.TextField()
@@ -22,7 +17,6 @@ class Games(models.Model):
     size = models.CharField(max_length=40)
     developer = models.CharField(max_length=100)
     magnet = models.TextField()
-
 
 class Contact(models.Model):
     name = models.CharField(max_length=100)

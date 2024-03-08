@@ -53,8 +53,8 @@ def contact_form_submit(request):
     if not validate_input_length(name, 2, 100):
         context["errors"].append("Your name should be between 2 to 100 characters")
 
-    if not validate_input_length(subject, 4, 200):
-        context["errors"].append("Your subject should be between 4 to 200 characters")
+    if not validate_input_length(subject, 4, 100):
+        context["errors"].append("Your subject should be between 4 to 100 characters")
 
     if not validate_input_length(message, 10, 500):
         context["errors"].append("Message should be between 10 to 500 characters")
